@@ -1,55 +1,56 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthStore } from './store/authStore'
+import Navbar from './components/Navbar'
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Favorites from './pages/Favorites'
+import Profile from './pages/Profile'
+import About from './pages/About'
 
-// Pages (to be created)
-const Home = () => <div className="flex-1 p-4">Home Page</div>
-const Login = () => <div className="flex-1 p-4">Login Page</div>
-const NotFound = () => <div className="flex-1 p-4">404 - Not Found</div>
+const NotFound = () => (
+  <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
+    <p className="text-6xl mb-4">🥤</p>
+    <h1 className="text-2xl font-bold text-gray-900 mb-2">Page not found</h1>
+    <p className="text-gray-600 mb-6">The page you're looking for doesn't exist.</p>
+    <a href="/" className="bg-red-700 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-red-800 transition-colors">
+      Find Stores
+    </a>
+  </div>
+)
 
 function App() {
-  const { initialize, isAuthenticated } = useAuthStore()
+  const { initialize, isAuthenticated, loading } = useAuthStore()
 
   useEffect(() => {
-    // Initialize authentication on app load
     initialize()
   }, [initialize])
 
+  if (loading) {
+    return (
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-4xl mb-3">🥤</p>
+          <p className="text-gray-500 text-sm">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <BrowserRouter>
-      <div className="flex flex-col h-screen w-screen">
-        {/* Header */}
-        <header className="bg-diet-coke-red text-white py-4 px-4 shadow-md">
-          <div className="max-w-7xl mx-auto flex justify-between items-center">
-            <h1 className="text-2xl font-bold">Diet Coke Store Locator</h1>
-            <nav className="flex gap-4">
-              {isAuthenticated ? (
-                <>
-                  <a href="/" className="hover:text-red-100">Home</a>
-                  <a href="/favorites" className="hover:text-red-100">Favorites</a>
-                  <a href="/profile" className="hover:text-red-100">Profile</a>
-                  <button className="hover:text-red-100">Logout</button>
-                </>
-              ) : (
-                <a href="/login" className="hover:text-red-100">Login</a>
-              )}
-            </nav>
-          </div>
-        </header>
-
-        {/* Main Content */}
-        <main className="flex-1 overflow-auto">
+      <div className="flex flex-col h-screen">
+        <Navbar />
+        <main className="flex-1 flex flex-col overflow-hidden">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
+            <Route path="/login" element={isAuthenticated ? <Navigate to="/" replace /> : <Login />} />
+            <Route path="/favorites" element={<Favorites />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/about" element={<About />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
-
-        {/* Footer */}
-        <footer className="bg-gray-100 text-center py-4 text-sm text-gray-600">
-          <p>&copy; 2026 Diet Coke Store Locator. Built with React + Supabase.</p>
-        </footer>
       </div>
     </BrowserRouter>
   )
