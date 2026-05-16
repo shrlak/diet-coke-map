@@ -77,8 +77,8 @@ export default function StoreDetailsModal({ store, onClose, distanceKm }: StoreD
         aria-hidden="true"
       />
 
-      {/* Modal */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:static md:z-auto bg-white rounded-t-2xl md:rounded-xl shadow-xl max-h-[80vh] overflow-y-auto">
+      {/* Modal – bottom sheet on mobile, centered card on desktop */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:top-1/2 md:left-1/2 md:bottom-auto md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-lg bg-white rounded-t-2xl md:rounded-xl shadow-xl max-h-[80vh] overflow-y-auto">
         {/* Header */}
         <div className="sticky top-0 bg-white border-b border-gray-100 px-5 py-4 flex items-start justify-between">
           <div className="min-w-0">
