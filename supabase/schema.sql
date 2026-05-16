@@ -68,6 +68,15 @@ ALTER TABLE products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE store_products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE favorite_stores ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies (safe to re-run)
+DROP POLICY IF EXISTS "stores_public_read" ON stores;
+DROP POLICY IF EXISTS "store_hours_public_read" ON store_hours;
+DROP POLICY IF EXISTS "products_public_read" ON products;
+DROP POLICY IF EXISTS "store_products_public_read" ON store_products;
+DROP POLICY IF EXISTS "favorites_select" ON favorite_stores;
+DROP POLICY IF EXISTS "favorites_insert" ON favorite_stores;
+DROP POLICY IF EXISTS "favorites_delete" ON favorite_stores;
+
 -- Public read access for store data
 CREATE POLICY "stores_public_read" ON stores FOR SELECT USING (true);
 CREATE POLICY "store_hours_public_read" ON store_hours FOR SELECT USING (true);
