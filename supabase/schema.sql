@@ -157,6 +157,7 @@ ON CONFLICT (sku) DO NOTHING;
 
 -- Pittsburgh-area stores — real verified locations sourced from chain store locators
 -- (Giant Eagle, GetGo, Sheetz, CVS, Walgreens, Target, Walmart, Aldi)
+-- Additional stores verified via official chain websites, Yelp, and Google Maps (May 2026)
 INSERT INTO stores (name, address, city, state, zip, latitude, longitude, phone, store_type) VALUES
   -- GetGo (10 locations — Giant Eagle fuel & convenience brand)
   ('GetGo (Ben Avon Heights)', '156 Ben Avon Heights Rd', 'Pittsburgh', 'PA', '15237', 40.50460, -80.05240, '(412) 761-8460', 'convenience'),
@@ -237,8 +238,31 @@ INSERT INTO stores (name, address, city, state, zip, latitude, longitude, phone,
   ('Target (South Hills Village)', '201 S Hills Village', 'Pittsburgh', 'PA', '15241', 40.34610, -80.04870, '(412) 595-9380', 'grocery'),
   ('Target (Waterfront / Homestead)', '360 Waterfront Dr E', 'Homestead', 'PA', '15120', 40.40830, -79.90080, '(412) 464-2522', 'grocery'),
 
-  -- Walmart (1 location)
-  ('Walmart (Robinson / Summit Park)', '250 Summit Park Dr', 'Pittsburgh', 'PA', '15275', 40.50210, -80.21180, '(412) 788-9079', 'grocery')
+  -- Walmart (2 locations)
+  ('Walmart (Robinson / Summit Park)', '250 Summit Park Dr', 'Pittsburgh', 'PA', '15275', 40.50210, -80.21180, '(412) 788-9079', 'grocery'),
+  ('Walmart (Moon Township)', '7500 University Blvd', 'Moon Township', 'PA', '15108', 40.51560, -80.22412, '(412) 893-0143', 'grocery'),
+
+  -- Additional Aldi locations (verified stores.aldi.us May 2026)
+  ('Aldi (Banksville Rd)', '2515 Banksville Rd', 'Pittsburgh', 'PA', '15216', 40.40574, -80.03594, '(855) 955-2534', 'grocery'),
+  ('Aldi (Penn Hills / Saltsburg Rd)', '7350 Saltsburg Rd', 'Penn Hills', 'PA', '15235', 40.46410, -79.81830, '(855) 955-2534', 'grocery'),
+  ('Aldi (Wilkinsburg / Penn Ave)', '401 Penn Ave', 'Wilkinsburg', 'PA', '15221', 40.44050, -79.87320, '(855) 955-2534', 'grocery'),
+
+  -- Additional Giant Eagle locations (verified gianteagle.com / Yelp May 2026)
+  ('Giant Eagle (Frankstown Rd, Penn Hills)', '9001 Frankstown Rd', 'Pittsburgh', 'PA', '15235', 40.45890, -79.82900, '(412) 371-0858', 'grocery'),
+  ('Giant Eagle (Rodi Rd, Penn Hills)', '230 Rodi Rd', 'Pittsburgh', 'PA', '15235', 40.46323, -79.82416, '(412) 241-7744', 'grocery'),
+
+  -- Additional GetGo locations (verified getgocafe.com / Yelp May 2026)
+  ('GetGo (Squirrel Hill / Forward Ave)', '5801 Forward Ave', 'Pittsburgh', 'PA', '15217', 40.42999, -79.92326, '(412) 421-2742', 'convenience'),
+  ('GetGo (Robinson / Steubenville Pike)', '6513 Steubenville Pike', 'Pittsburgh', 'PA', '15205', 40.44745, -80.16289, '(412) 446-0264', 'convenience'),
+
+  -- Additional CVS location (verified cvs.com May 2026)
+  ('CVS Pharmacy (Brookline Blvd)', '510 Brookline Blvd', 'Pittsburgh', 'PA', '15226', 40.39602, -80.02321, '(412) 531-2190', 'drugstore'),
+
+  -- Additional Sheetz location (verified sheetz.com / Yelp May 2026)
+  ('Sheetz (Pleasant Hills / Curry Hollow)', '251 Curry Hollow Rd', 'Pittsburgh', 'PA', '15236', 40.33643, -79.97151, '(412) 675-1712', 'convenience'),
+
+  -- Additional Walgreens location (verified walgreens.com May 2026)
+  ('Walgreens (Robinson / Enterprise Dr)', '130 Enterprise Dr', 'Pittsburgh', 'PA', '15275', 40.50280, -80.19620, '(412) 262-2910', 'drugstore')
 
 ON CONFLICT DO NOTHING;
 
