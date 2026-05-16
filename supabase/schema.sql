@@ -222,6 +222,261 @@ INSERT INTO stores (name, address, city, state, zip, latitude, longitude, phone,
   ('GetGo Lancaster', '150 Spooky Nook Rd', 'Ephrata', 'PA', '17522', 40.1750, -76.2100, '(717) 555-0231', 'convenience')
 ON CONFLICT DO NOTHING;
 
+-- Additional Pittsburgh-area stores (100+)
+INSERT INTO stores (name, address, city, state, zip, latitude, longitude, phone, store_type) VALUES
+  -- Strip District / Cultural District
+  ('CVS Pharmacy Strip District', '2218 Penn Ave', 'Pittsburgh', 'PA', '15222', 40.44750, -79.98920, '(412) 555-0301', 'drugstore'),
+  ('7-Eleven Strip District', '1800 Penn Ave', 'Pittsburgh', 'PA', '15222', 40.44630, -79.99100, '(412) 555-0302', 'convenience'),
+  ('Giant Eagle Market District Penn Ave', '1600 Penn Ave', 'Pittsburgh', 'PA', '15222', 40.44530, -79.99280, '(412) 555-0303', 'grocery'),
+
+  -- North Shore / North Side
+  ('GetGo North Shore', '1 Federal St', 'Pittsburgh', 'PA', '15212', 40.44790, -80.00650, '(412) 555-0304', 'convenience'),
+  ('7-Eleven North Side', '900 Western Ave', 'Pittsburgh', 'PA', '15233', 40.45440, -80.01380, '(412) 555-0305', 'convenience'),
+  ('CVS Pharmacy North Side', '1100 East Ohio St', 'Pittsburgh', 'PA', '15212', 40.45560, -80.00740, '(412) 555-0306', 'drugstore'),
+
+  -- South Side
+  ('Sheetz South Side', '2519 E Carson St', 'Pittsburgh', 'PA', '15203', 40.42860, -79.97480, '(412) 555-0307', 'convenience'),
+  ('CVS Pharmacy South Side', '2600 E Carson St', 'Pittsburgh', 'PA', '15203', 40.42870, -79.97400, '(412) 555-0308', 'drugstore'),
+  ('Giant Eagle South Side', '1900 E Carson St', 'Pittsburgh', 'PA', '15203', 40.42800, -79.98100, '(412) 555-0309', 'grocery'),
+  ('Walgreens South Side', '2300 E Carson St', 'Pittsburgh', 'PA', '15203', 40.42830, -79.97720, '(412) 555-0310', 'drugstore'),
+  ('GetGo South Side Works', '450 S 27th St', 'Pittsburgh', 'PA', '15203', 40.42710, -79.97420, '(412) 555-0311', 'convenience'),
+  ('Rite Aid South Side', '2100 E Carson St', 'Pittsburgh', 'PA', '15203', 40.42820, -79.97900, '(412) 555-0312', 'drugstore'),
+
+  -- Lawrenceville
+  ('Giant Eagle Lawrenceville', '4950 Penn Ave', 'Pittsburgh', 'PA', '15224', 40.46500, -79.93480, '(412) 555-0313', 'grocery'),
+  ('CVS Pharmacy Lawrenceville', '4812 Butler St', 'Pittsburgh', 'PA', '15201', 40.47200, -79.95300, '(412) 555-0314', 'drugstore'),
+  ('GetGo Lawrenceville', '4500 Penn Ave', 'Pittsburgh', 'PA', '15224', 40.46400, -79.94000, '(412) 555-0315', 'convenience'),
+  ('Walgreens Lawrenceville', '3600 Butler St', 'Pittsburgh', 'PA', '15201', 40.46700, -79.96000, '(412) 555-0316', 'drugstore'),
+  ('Dollar General Lawrenceville', '4200 Butler St', 'Pittsburgh', 'PA', '15201', 40.46900, -79.95700, '(412) 555-0317', 'convenience'),
+  ('Sheetz Lawrenceville', '5000 Butler St', 'Pittsburgh', 'PA', '15201', 40.47350, -79.94800, '(412) 555-0318', 'convenience'),
+
+  -- Bloomfield
+  ('CVS Pharmacy Bloomfield', '4412 Liberty Ave', 'Pittsburgh', 'PA', '15224', 40.45980, -79.94400, '(412) 555-0319', 'drugstore'),
+  ('Giant Eagle Bloomfield', '4550 Liberty Ave', 'Pittsburgh', 'PA', '15224', 40.46000, -79.94300, '(412) 555-0320', 'grocery'),
+  ('GetGo Bloomfield', '4300 Liberty Ave', 'Pittsburgh', 'PA', '15224', 40.45960, -79.94600, '(412) 555-0321', 'convenience'),
+
+  -- East Liberty
+  ('Giant Eagle East Liberty', '6024 Centre Ave', 'Pittsburgh', 'PA', '15206', 40.46290, -79.92710, '(412) 555-0322', 'grocery'),
+  ('Target East Liberty', '6231 Penn Circle S', 'Pittsburgh', 'PA', '15206', 40.45950, -79.92200, '(412) 555-0323', 'grocery'),
+  ('CVS Pharmacy East Liberty', '5500 Penn Ave', 'Pittsburgh', 'PA', '15206', 40.46300, -79.92950, '(412) 555-0324', 'drugstore'),
+  ('Walgreens East Liberty', '6100 Penn Ave', 'Pittsburgh', 'PA', '15206', 40.46250, -79.92680, '(412) 555-0325', 'drugstore'),
+  ('Aldi East Liberty', '5929 Penn Ave', 'Pittsburgh', 'PA', '15206', 40.46100, -79.92850, '(412) 555-0326', 'grocery'),
+  ('Dollar General East Liberty', '5700 Penn Ave', 'Pittsburgh', 'PA', '15206', 40.46100, -79.93100, '(412) 555-0327', 'convenience'),
+
+  -- Point Breeze / Regent Square
+  ('Giant Eagle Point Breeze', '5870 Baum Blvd', 'Pittsburgh', 'PA', '15206', 40.45200, -79.91730, '(412) 555-0328', 'grocery'),
+  ('CVS Pharmacy Point Breeze', '6040 Walnut St', 'Pittsburgh', 'PA', '15206', 40.45200, -79.91900, '(412) 555-0329', 'drugstore'),
+
+  -- Greenfield / Hazelwood
+  ('CVS Pharmacy Greenfield', '3705 Greenfield Ave', 'Pittsburgh', 'PA', '15207', 40.40730, -79.94180, '(412) 555-0330', 'drugstore'),
+  ('Dollar General Hazelwood', '4801 Hazelwood Ave', 'Pittsburgh', 'PA', '15207', 40.40120, -79.93300, '(412) 555-0331', 'convenience'),
+  ('GetGo Greenfield', '3800 Greenfield Ave', 'Pittsburgh', 'PA', '15207', 40.40720, -79.94000, '(412) 555-0332', 'convenience'),
+
+  -- Homestead / Waterfront District
+  ('Target Waterfront', '200 E Waterfront Dr', 'Homestead', 'PA', '15120', 40.40800, -79.90560, '(412) 555-0333', 'grocery'),
+  ('Giant Eagle Waterfront', '300 E Waterfront Dr', 'Homestead', 'PA', '15120', 40.40750, -79.90480, '(412) 555-0334', 'grocery'),
+  ('CVS Pharmacy Homestead', '3701 E Carson St', 'Pittsburgh', 'PA', '15120', 40.40780, -79.89800, '(412) 555-0335', 'drugstore'),
+  ('Walgreens Homestead', '400 E Waterfront Dr', 'Homestead', 'PA', '15120', 40.40820, -79.90440, '(412) 555-0336', 'drugstore'),
+
+  -- Edgewood / Swissvale
+  ('Giant Eagle Edgewood', '100 Edgewood Ave', 'Edgewood', 'PA', '15218', 40.42910, -79.88180, '(412) 555-0337', 'grocery'),
+  ('CVS Pharmacy Swissvale', '7300 Fairless Dr', 'Swissvale', 'PA', '15218', 40.41850, -79.88930, '(412) 555-0338', 'drugstore'),
+  ('GetGo Edgewood', '200 Edgewood Ave', 'Edgewood', 'PA', '15218', 40.42890, -79.88120, '(412) 555-0339', 'convenience'),
+
+  -- Penn Hills
+  ('Giant Eagle Penn Hills', '12000 Frankstown Rd', 'Penn Hills', 'PA', '15235', 40.46000, -79.82950, '(412) 555-0340', 'grocery'),
+  ('CVS Pharmacy Penn Hills', '11001 Frankstown Rd', 'Penn Hills', 'PA', '15235', 40.45980, -79.83200, '(412) 555-0341', 'drugstore'),
+  ('GetGo Penn Hills', '12250 Frankstown Rd', 'Penn Hills', 'PA', '15235', 40.46050, -79.82700, '(412) 555-0342', 'convenience'),
+  ('Walgreens Penn Hills', '11400 Frankstown Rd', 'Penn Hills', 'PA', '15235', 40.46000, -79.83050, '(412) 555-0343', 'drugstore'),
+  ('Sheetz Penn Hills', '12500 Frankstown Rd', 'Penn Hills', 'PA', '15235', 40.46100, -79.82600, '(412) 555-0344', 'convenience'),
+
+  -- Plum Borough
+  ('Giant Eagle Plum', '4745 New Texas Rd', 'Plum', 'PA', '15239', 40.49250, -79.75400, '(412) 555-0345', 'grocery'),
+  ('CVS Pharmacy Plum', '4600 New Texas Rd', 'Plum', 'PA', '15239', 40.49150, -79.75600, '(412) 555-0346', 'drugstore'),
+  ('Sheetz Plum', '4900 New Texas Rd', 'Plum', 'PA', '15239', 40.49350, -79.75250, '(412) 555-0347', 'convenience'),
+  ('GetGo Plum', '4500 New Texas Rd', 'Plum', 'PA', '15239', 40.49050, -79.75700, '(412) 555-0348', 'convenience'),
+
+  -- Murrysville / Export
+  ('Giant Eagle Murrysville', '4844 William Penn Hwy', 'Murrysville', 'PA', '15668', 40.44110, -79.67100, '(412) 555-0349', 'grocery'),
+  ('CVS Pharmacy Murrysville', '4700 William Penn Hwy', 'Murrysville', 'PA', '15668', 40.44000, -79.67300, '(412) 555-0350', 'drugstore'),
+  ('Sheetz Murrysville', '5100 William Penn Hwy', 'Murrysville', 'PA', '15668', 40.44250, -79.66800, '(412) 555-0351', 'convenience'),
+  ('Walgreens Murrysville', '4850 William Penn Hwy', 'Murrysville', 'PA', '15668', 40.44130, -79.67060, '(412) 555-0352', 'drugstore'),
+
+  -- McKeesport
+  ('Giant Eagle McKeesport', '2800 Braddock Ave', 'McKeesport', 'PA', '15132', 40.35400, -79.85000, '(412) 555-0353', 'grocery'),
+  ('CVS Pharmacy McKeesport', '1701 5th Ave', 'McKeesport', 'PA', '15132', 40.34790, -79.84530, '(412) 555-0354', 'drugstore'),
+  ('Walgreens McKeesport', '1900 5th Ave', 'McKeesport', 'PA', '15132', 40.34790, -79.84300, '(412) 555-0355', 'drugstore'),
+  ('Sheetz McKeesport', '2600 Braddock Ave', 'McKeesport', 'PA', '15132', 40.35200, -79.85200, '(412) 555-0356', 'convenience'),
+
+  -- West Mifflin / Duquesne
+  ('Giant Eagle West Mifflin', '3000 Lebanon Church Rd', 'West Mifflin', 'PA', '15122', 40.36260, -79.86720, '(412) 555-0357', 'grocery'),
+  ('CVS Pharmacy West Mifflin', '2900 Lebanon Church Rd', 'West Mifflin', 'PA', '15122', 40.36200, -79.86800, '(412) 555-0358', 'drugstore'),
+  ('GetGo West Mifflin', '3100 Lebanon Church Rd', 'West Mifflin', 'PA', '15122', 40.36300, -79.86640, '(412) 555-0359', 'convenience'),
+
+  -- Baldwin / Brentwood
+  ('Giant Eagle Brentwood', '3663 Brownsville Rd', 'Brentwood', 'PA', '15227', 40.37290, -79.97580, '(412) 555-0360', 'grocery'),
+  ('CVS Pharmacy Baldwin', '4700 Clairton Blvd', 'Pittsburgh', 'PA', '15236', 40.36170, -79.98260, '(412) 555-0361', 'drugstore'),
+  ('GetGo Baldwin', '4800 Clairton Blvd', 'Pittsburgh', 'PA', '15236', 40.36120, -79.98180, '(412) 555-0362', 'convenience'),
+  ('Walgreens Brentwood', '3700 Brownsville Rd', 'Brentwood', 'PA', '15227', 40.37300, -79.97560, '(412) 555-0363', 'drugstore'),
+
+  -- Whitehall
+  ('Giant Eagle Whitehall', '100 Brentwood Sq', 'Pittsburgh', 'PA', '15227', 40.36170, -79.99950, '(412) 555-0364', 'grocery'),
+  ('Walgreens Whitehall', '200 Whitehall Rd', 'Pittsburgh', 'PA', '15227', 40.36200, -80.00100, '(412) 555-0365', 'drugstore'),
+  ('CVS Pharmacy Whitehall', '150 Whitehall Rd', 'Pittsburgh', 'PA', '15227', 40.36180, -80.00030, '(412) 555-0366', 'drugstore'),
+  ('GetGo Whitehall', '300 Whitehall Rd', 'Pittsburgh', 'PA', '15227', 40.36190, -80.00180, '(412) 555-0367', 'convenience'),
+
+  -- Mount Lebanon
+  ('Giant Eagle Mt. Lebanon', '1150 Bower Hill Rd', 'Pittsburgh', 'PA', '15243', 40.37400, -80.05200, '(412) 555-0368', 'grocery'),
+  ('CVS Pharmacy Mt. Lebanon', '800 Washington Rd', 'Pittsburgh', 'PA', '15228', 40.37400, -80.04700, '(412) 555-0369', 'drugstore'),
+  ('Walgreens Mt. Lebanon', '950 Washington Rd', 'Pittsburgh', 'PA', '15228', 40.37390, -80.04680, '(412) 555-0370', 'drugstore'),
+  ('GetGo Mt. Lebanon', '1100 Bower Hill Rd', 'Pittsburgh', 'PA', '15243', 40.37420, -80.05140, '(412) 555-0371', 'convenience'),
+  ('Sheetz Mt. Lebanon', '700 Washington Rd', 'Pittsburgh', 'PA', '15228', 40.37380, -80.04650, '(412) 555-0372', 'convenience'),
+
+  -- Bethel Park
+  ('Giant Eagle Bethel Park', '5027 Library Rd', 'Bethel Park', 'PA', '15102', 40.33300, -80.04800, '(412) 555-0373', 'grocery'),
+  ('CVS Pharmacy Bethel Park', '4983 Library Rd', 'Bethel Park', 'PA', '15102', 40.33250, -80.04750, '(412) 555-0374', 'drugstore'),
+  ('GetGo Bethel Park', '5200 Library Rd', 'Bethel Park', 'PA', '15102', 40.33350, -80.04850, '(412) 555-0375', 'convenience'),
+  ('Sheetz Bethel Park', '5400 Library Rd', 'Bethel Park', 'PA', '15102', 40.33400, -80.04900, '(412) 555-0376', 'convenience'),
+  ('Walgreens Bethel Park', '4900 Library Rd', 'Bethel Park', 'PA', '15102', 40.33220, -80.04720, '(412) 555-0377', 'drugstore'),
+
+  -- Carnegie / Scott Township
+  ('Giant Eagle Carnegie', '100 W Main St', 'Carnegie', 'PA', '15106', 40.39500, -80.08300, '(412) 555-0378', 'grocery'),
+  ('CVS Pharmacy Carnegie', '200 W Main St', 'Carnegie', 'PA', '15106', 40.39480, -80.08350, '(412) 555-0379', 'drugstore'),
+  ('GetGo Scott Township', '1400 Cochran Rd', 'Pittsburgh', 'PA', '15220', 40.37800, -80.09000, '(412) 555-0380', 'convenience'),
+  ('Sheetz Carnegie', '300 W Main St', 'Carnegie', 'PA', '15106', 40.39460, -80.08400, '(412) 555-0381', 'convenience'),
+  ('Walgreens Carnegie', '400 W Main St', 'Carnegie', 'PA', '15106', 40.39440, -80.08450, '(412) 555-0382', 'drugstore'),
+
+  -- Bridgeville
+  ('Giant Eagle Bridgeville', '1 McKee Pl', 'Bridgeville', 'PA', '15017', 40.35630, -80.11880, '(412) 555-0383', 'grocery'),
+  ('Sheetz Bridgeville', '1100 Washington Pike', 'Bridgeville', 'PA', '15017', 40.35700, -80.11800, '(412) 555-0384', 'convenience'),
+  ('GetGo Bridgeville', '900 Washington Pike', 'Bridgeville', 'PA', '15017', 40.35600, -80.11950, '(412) 555-0385', 'convenience'),
+  ('CVS Pharmacy Bridgeville', '600 Washington Pike', 'Bridgeville', 'PA', '15017', 40.35550, -80.12000, '(412) 555-0386', 'drugstore'),
+
+  -- McKees Rocks / Stowe Township
+  ('Giant Eagle McKees Rocks', '300 Chartiers Ave', 'McKees Rocks', 'PA', '15136', 40.46930, -80.06550, '(412) 555-0387', 'grocery'),
+  ('CVS Pharmacy McKees Rocks', '400 Chartiers Ave', 'McKees Rocks', 'PA', '15136', 40.46900, -80.06600, '(412) 555-0388', 'drugstore'),
+  ('GetGo Stowe Township', '600 Chartiers Ave', 'McKees Rocks', 'PA', '15136', 40.47060, -80.06400, '(412) 555-0389', 'convenience'),
+  ('Sheetz McKees Rocks', '500 Chartiers Ave', 'McKees Rocks', 'PA', '15136', 40.46950, -80.06480, '(412) 555-0390', 'convenience'),
+
+  -- Coraopolis / Moon Township
+  ('Giant Eagle Moon Township', '500 Chauvet Dr', 'Moon Township', 'PA', '15108', 40.50300, -80.20410, '(412) 555-0391', 'grocery'),
+  ('GetGo Moon Township', '600 Chauvet Dr', 'Moon Township', 'PA', '15108', 40.50350, -80.20500, '(412) 555-0392', 'convenience'),
+  ('Sheetz Coraopolis', '1101 5th Ave', 'Coraopolis', 'PA', '15108', 40.51910, -80.16590, '(412) 555-0393', 'convenience'),
+  ('CVS Pharmacy Moon Township', '700 Chauvet Dr', 'Moon Township', 'PA', '15108', 40.50400, -80.20600, '(412) 555-0394', 'drugstore'),
+  ('Walgreens Coraopolis', '1200 5th Ave', 'Coraopolis', 'PA', '15108', 40.51880, -80.16450, '(412) 555-0395', 'drugstore'),
+  ('Target Moon Township', '800 Chauvet Dr', 'Moon Township', 'PA', '15108', 40.50450, -80.20700, '(412) 555-0396', 'grocery'),
+
+  -- Robinson Township
+  ('Giant Eagle Robinson', '101 Settlers Ridge Center Dr', 'Pittsburgh', 'PA', '15205', 40.44880, -80.15080, '(412) 555-0397', 'grocery'),
+  ('Target Robinson', '6000 Steubenville Pike', 'Pittsburgh', 'PA', '15205', 40.45200, -80.14830, '(412) 555-0398', 'grocery'),
+  ('Walmart Robinson', '100 Kenmawr Ave', 'Carnegie', 'PA', '15106', 40.45300, -80.14750, '(412) 555-0399', 'grocery'),
+  ('Sam''s Club Robinson', '300 Kenmawr Ave', 'Carnegie', 'PA', '15106', 40.45270, -80.14720, '(412) 555-0400', 'grocery'),
+  ('Sheetz Robinson', '4800 Steubenville Pike', 'Pittsburgh', 'PA', '15205', 40.44900, -80.14500, '(412) 555-0401', 'convenience'),
+  ('CVS Pharmacy Robinson', '200 Settlers Ridge Center Dr', 'Pittsburgh', 'PA', '15205', 40.44920, -80.15100, '(412) 555-0402', 'drugstore'),
+
+  -- Ross Township / McKnight Rd Corridor
+  ('Giant Eagle McKnight Rd', '4901 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.51800, -80.01750, '(412) 555-0403', 'grocery'),
+  ('Target North Hills Village', '4900 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.51750, -80.01700, '(412) 555-0404', 'grocery'),
+  ('Walmart Ross Park', '4600 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.51200, -80.01800, '(412) 555-0405', 'grocery'),
+  ('CVS Pharmacy Ross Township', '5000 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.51850, -80.01720, '(412) 555-0406', 'drugstore'),
+  ('Walgreens McKnight Rd', '5100 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.51900, -80.01680, '(412) 555-0407', 'drugstore'),
+  ('GetGo Ross Township', '5200 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.51950, -80.01640, '(412) 555-0408', 'convenience'),
+  ('Sheetz Ross Township', '4700 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.51250, -80.01780, '(412) 555-0409', 'convenience'),
+  ('Aldi Ross Township', '5050 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.51860, -80.01710, '(412) 555-0410', 'grocery'),
+
+  -- McCandless Township
+  ('Giant Eagle McCandless', '7600 Pines Plaza', 'Pittsburgh', 'PA', '15237', 40.58300, -80.00500, '(412) 555-0411', 'grocery'),
+  ('CVS Pharmacy McCandless', '9400 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.58350, -80.00400, '(412) 555-0412', 'drugstore'),
+  ('GetGo McCandless', '9300 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.58250, -80.00550, '(412) 555-0413', 'convenience'),
+  ('Sheetz McCandless', '9200 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.58200, -80.00600, '(412) 555-0414', 'convenience'),
+  ('Walgreens McCandless', '9500 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.58400, -80.00350, '(412) 555-0415', 'drugstore'),
+
+  -- Shaler Township
+  ('Giant Eagle Shaler', '1800 Mt Royal Blvd', 'Glenshaw', 'PA', '15116', 40.53200, -79.96700, '(412) 555-0416', 'grocery'),
+  ('CVS Pharmacy Shaler', '1700 Mt Royal Blvd', 'Glenshaw', 'PA', '15116', 40.53150, -79.96750, '(412) 555-0417', 'drugstore'),
+  ('GetGo Shaler', '1600 Mt Royal Blvd', 'Glenshaw', 'PA', '15116', 40.53100, -79.96800, '(412) 555-0418', 'convenience'),
+  ('Sheetz Shaler', '1900 Mt Royal Blvd', 'Glenshaw', 'PA', '15116', 40.53250, -79.96650, '(412) 555-0419', 'convenience'),
+
+  -- Cranberry Township
+  ('Giant Eagle Cranberry', '20025 Route 19', 'Cranberry Township', 'PA', '16066', 40.68450, -80.09340, '(724) 555-0420', 'grocery'),
+  ('Target Cranberry', '20000 Route 19', 'Cranberry Township', 'PA', '16066', 40.68400, -80.09300, '(724) 555-0421', 'grocery'),
+  ('CVS Pharmacy Cranberry', '20050 Route 19', 'Cranberry Township', 'PA', '16066', 40.68480, -80.09320, '(724) 555-0422', 'drugstore'),
+  ('Walgreens Cranberry', '20100 Route 19', 'Cranberry Township', 'PA', '16066', 40.68500, -80.09280, '(724) 555-0423', 'drugstore'),
+  ('GetGo Cranberry', '20200 Route 19', 'Cranberry Township', 'PA', '16066', 40.68550, -80.09250, '(724) 555-0424', 'convenience'),
+  ('Sheetz Cranberry', '19900 Route 19', 'Cranberry Township', 'PA', '16066', 40.68350, -80.09400, '(724) 555-0425', 'convenience'),
+  ('Aldi Cranberry', '20300 Route 19', 'Cranberry Township', 'PA', '16066', 40.68600, -80.09200, '(724) 555-0426', 'grocery'),
+  ('Walmart Cranberry', '20500 Route 19', 'Cranberry Township', 'PA', '16066', 40.68650, -80.09150, '(724) 555-0427', 'grocery'),
+
+  -- Wexford
+  ('Giant Eagle Wexford', '10800 Perry Hwy', 'Wexford', 'PA', '15090', 40.63450, -80.05000, '(724) 555-0428', 'grocery'),
+  ('CVS Pharmacy Wexford', '10700 Perry Hwy', 'Wexford', 'PA', '15090', 40.63400, -80.05050, '(724) 555-0429', 'drugstore'),
+  ('Sheetz Wexford', '10900 Perry Hwy', 'Wexford', 'PA', '15090', 40.63500, -80.04950, '(724) 555-0430', 'convenience'),
+  ('Walgreens Wexford', '11000 Perry Hwy', 'Wexford', 'PA', '15090', 40.63550, -80.04900, '(724) 555-0431', 'drugstore'),
+  ('GetGo Wexford', '10600 Perry Hwy', 'Wexford', 'PA', '15090', 40.63350, -80.05100, '(724) 555-0432', 'convenience'),
+  ('Giant Eagle Wexford North', '11200 Perry Hwy', 'Wexford', 'PA', '15090', 40.63600, -80.04850, '(724) 555-0433', 'grocery'),
+
+  -- Millvale / Aspinwall / Fox Chapel
+  ('GetGo Millvale', '317 N Canal St', 'Millvale', 'PA', '15209', 40.48620, -79.97450, '(412) 555-0434', 'convenience'),
+  ('CVS Pharmacy Aspinwall', '310 Commercial Ave', 'Aspinwall', 'PA', '15215', 40.48690, -79.89660, '(412) 555-0435', 'drugstore'),
+  ('Giant Eagle Fox Chapel', '1901 Fox Chapel Rd', 'Pittsburgh', 'PA', '15238', 40.51950, -79.88890, '(412) 555-0436', 'grocery'),
+  ('GetGo Fox Chapel', '1800 Fox Chapel Rd', 'Pittsburgh', 'PA', '15238', 40.51900, -79.88950, '(412) 555-0437', 'convenience'),
+
+  -- Additional Wilkinsburg stores
+  ('7-Eleven Wilkinsburg', '730 Penn Ave', 'Wilkinsburg', 'PA', '15221', 40.44400, -79.87500, '(412) 555-0438', 'convenience'),
+  ('Walgreens Wilkinsburg', '720 Penn Ave', 'Wilkinsburg', 'PA', '15221', 40.44420, -79.87520, '(412) 555-0439', 'drugstore'),
+
+  -- Additional Squirrel Hill stores
+  ('Aldi Squirrel Hill', '2628 Murray Ave', 'Pittsburgh', 'PA', '15217', 40.42700, -79.92480, '(412) 555-0440', 'grocery'),
+  ('7-Eleven Squirrel Hill', '1907 Murray Ave', 'Pittsburgh', 'PA', '15217', 40.42810, -79.92590, '(412) 555-0441', 'convenience'),
+  ('Rite Aid Squirrel Hill', '2134 Murray Ave', 'Pittsburgh', 'PA', '15217', 40.42830, -79.92560, '(412) 555-0442', 'drugstore'),
+
+  -- Additional Shadyside stores
+  ('Walgreens Shadyside', '5810 Ellsworth Ave', 'Pittsburgh', 'PA', '15232', 40.45380, -79.93650, '(412) 555-0443', 'drugstore'),
+  ('Whole Foods Market Shadyside', '5847 Centre Ave', 'Pittsburgh', 'PA', '15232', 40.45400, -79.93260, '(412) 555-0444', 'grocery'),
+  ('Rite Aid Shadyside', '5700 Ellsworth Ave', 'Pittsburgh', 'PA', '15232', 40.45340, -79.93740, '(412) 555-0445', 'drugstore'),
+
+  -- Additional North Hills / Gibsonia area
+  ('Walmart North Hills', '4800 Gibsonia Rd', 'Pittsburgh', 'PA', '15237', 40.52150, -79.94380, '(412) 555-0446', 'grocery'),
+  ('CVS Pharmacy North Hills', '4650 Gibsonia Rd', 'Pittsburgh', 'PA', '15237', 40.52080, -79.94460, '(412) 555-0447', 'drugstore'),
+  ('Walgreens North Hills', '4700 Gibsonia Rd', 'Pittsburgh', 'PA', '15237', 40.52100, -79.94440, '(412) 555-0448', 'drugstore'),
+
+  -- Additional West End / Greentree stores
+  ('Sheetz West End', '1300 Greentree Rd', 'Pittsburgh', 'PA', '15220', 40.41950, -80.04100, '(412) 555-0449', 'convenience'),
+  ('CVS Pharmacy West End', '1400 Greentree Rd', 'Pittsburgh', 'PA', '15220', 40.41980, -80.04050, '(412) 555-0450', 'drugstore'),
+  ('Walgreens West End', '1550 Greentree Rd', 'Pittsburgh', 'PA', '15220', 40.42020, -80.04000, '(412) 555-0451', 'drugstore'),
+
+  -- Additional Monroeville stores
+  ('Target Monroeville', '3625 Mosside Blvd', 'Monroeville', 'PA', '15146', 40.40900, -79.76100, '(412) 555-0452', 'grocery'),
+  ('CVS Pharmacy Monroeville', '3500 William Penn Hwy', 'Monroeville', 'PA', '15146', 40.42300, -79.77200, '(412) 555-0453', 'drugstore'),
+  ('Walgreens Monroeville', '3700 William Penn Hwy', 'Monroeville', 'PA', '15146', 40.42350, -79.76900, '(412) 555-0454', 'drugstore'),
+  ('Walmart Monroeville', '3740 Mosside Blvd', 'Monroeville', 'PA', '15146', 40.42200, -79.76500, '(412) 555-0455', 'grocery'),
+  ('Aldi Monroeville', '3800 William Penn Hwy', 'Monroeville', 'PA', '15146', 40.42380, -79.76700, '(412) 555-0456', 'grocery'),
+
+  -- Oakdale / Imperial (far west)
+  ('Sheetz Oakdale', '50 Millers Run Rd', 'Oakdale', 'PA', '15071', 40.39960, -80.18560, '(412) 555-0457', 'convenience'),
+  ('Giant Eagle Oakdale', '100 Millers Run Rd', 'Oakdale', 'PA', '15071', 40.39980, -80.18530, '(412) 555-0458', 'grocery'),
+
+  -- Canonsburg / Peters Township
+  ('Giant Eagle Canonsburg', '200 Pike St', 'Canonsburg', 'PA', '15317', 40.26570, -80.18640, '(724) 555-0459', 'grocery'),
+  ('Sheetz Canonsburg', '300 Pike St', 'Canonsburg', 'PA', '15317', 40.26540, -80.18660, '(724) 555-0460', 'convenience'),
+  ('CVS Pharmacy Canonsburg', '150 Pike St', 'Canonsburg', 'PA', '15317', 40.26560, -80.18650, '(724) 555-0461', 'drugstore'),
+
+  -- Uniontown (South)
+  ('Giant Eagle Uniontown', '320 Matthew Dr', 'Uniontown', 'PA', '15401', 39.89940, -79.71940, '(724) 555-0462', 'grocery'),
+  ('Sheetz Uniontown', '400 Matthew Dr', 'Uniontown', 'PA', '15401', 39.89960, -79.71920, '(724) 555-0463', 'convenience'),
+
+  -- Additional Downtown stores
+  ('Dollar General Downtown', '600 Smithfield St', 'Pittsburgh', 'PA', '15222', 40.43860, -79.99670, '(412) 555-0464', 'convenience'),
+  ('CVS Pharmacy Cultural District', '700 Penn Ave', 'Pittsburgh', 'PA', '15222', 40.44300, -79.99540, '(412) 555-0465', 'drugstore'),
+  ('7-Eleven Downtown Pittsburgh', '501 Grant St', 'Pittsburgh', 'PA', '15219', 40.43890, -79.99830, '(412) 555-0466', 'convenience'),
+
+  -- Carrick / Knoxville (South)
+  ('Giant Eagle Carrick', '2021 Brownsville Rd', 'Pittsburgh', 'PA', '15210', 40.40600, -79.97800, '(412) 555-0467', 'grocery'),
+  ('CVS Pharmacy Carrick', '1900 Brownsville Rd', 'Pittsburgh', 'PA', '15210', 40.40580, -79.97820, '(412) 555-0468', 'drugstore'),
+  ('Dollar General Knoxville', '700 Warrington Ave', 'Pittsburgh', 'PA', '15210', 40.41200, -79.99500, '(412) 555-0469', 'convenience')
+
+ON CONFLICT DO NOTHING;
+
 -- Sample store hours (Mon-Sun 7am-10pm for all sample stores)
 INSERT INTO store_hours (store_id, day_of_week, opens_at, closes_at)
 SELECT s.id, d.day, '07:00'::time, '22:00'::time

@@ -310,18 +310,16 @@ export default function Home() {
               )}
             </div>
 
-            {/* Store Details Modal (on map view) */}
+            {/* Store Details Modal (map view – all screen sizes) */}
             {selectedStore && (
-              <div className="absolute bottom-0 left-0 right-0 md:hidden z-50">
-                <StoreDetailsModal
-                  store={selectedStore}
-                  onClose={() => {
-                    setSelectedStore(null)
-                    setSelectedStoreId(null)
-                  }}
-                  distanceKm={getDistance(selectedStore)}
-                />
-              </div>
+              <StoreDetailsModal
+                store={selectedStore}
+                onClose={() => {
+                  setSelectedStore(null)
+                  setSelectedStoreId(null)
+                }}
+                distanceKm={getDistance(selectedStore)}
+              />
             )}
           </>
         )}

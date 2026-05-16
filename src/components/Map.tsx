@@ -1,10 +1,9 @@
 import { useEffect } from 'react'
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import type { Store } from '../types'
 
-// Fix Leaflet default icon issue with bundlers
 delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
@@ -12,7 +11,6 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
 })
 
-// Diet Coke red marker icon
 const storeIcon = L.divIcon({
   className: '',
   html: `<div style="
@@ -59,14 +57,7 @@ const userIcon = L.divIcon({
   iconAnchor: [10, 10],
 })
 
-// Component to re-center map when location changes
-function MapController({
-  center,
-  zoom,
-}: {
-  center: [number, number]
-  zoom: number
-}) {
+function MapController({ center, zoom }: { center: [number, number]; zoom: number }) {
   const map = useMap()
   useEffect(() => {
     map.setView(center, zoom)
@@ -83,6 +74,8 @@ interface MapProps {
   onStoreSelect: (storeId: string) => void
 }
 
+const tomtomKey = import.meta.env.VITE_TOMTOM_KEY as string | undefined
+
 export default function Map({
   stores,
   selectedStoreId,
@@ -98,28 +91,33 @@ export default function Map({
       style={{ height: '100%', width: '100%' }}
       scrollWheelZoom={true}
     >
-      {/* Map tiles from OpenStreetMap (free, no API key needed) */}
+      {/* CartoDB Positron – clean, minimal basemap */}
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+        subdomains="abcd"
+        maxZoom={19}
       />
 
-      {/* Update map center when props change */}
+      {/* TomTom live traffic flow overlay (requires VITE_TOMTOM_KEY) */}
+      {tomtomKey && (
+        <TileLayer
+          url={`https://api.tomtom.com/traffic/map/4/tile/flow/relative0/{z}/{x}/{y}.png?key=${tomtomKey}&tileSize=256`}
+          attribution='Traffic &copy; <a href="https://www.tomtom.com">TomTom</a>'
+          opacity={0.7}
+          maxZoom={19}
+        />
+      )}
+
       <MapController center={center} zoom={zoom} />
 
-      {/* User location marker */}
       {userLocation && (
         <Marker
           position={[userLocation.latitude, userLocation.longitude]}
           icon={userIcon}
-        >
-          <Popup>
-            <div className="text-sm font-medium">📍 Your Location</div>
-          </Popup>
-        </Marker>
+        />
       )}
 
-      {/* Store markers */}
       {stores.map((store) => (
         <Marker
           key={store.id}
@@ -128,21 +126,7 @@ export default function Map({
           eventHandlers={{
             click: () => onStoreSelect(store.id),
           }}
-        >
-          <Popup>
-            <div className="min-w-[160px]">
-              <p className="font-semibold text-sm">{store.name}</p>
-              <p className="text-xs text-gray-500 mt-1">{store.address}</p>
-              <p className="text-xs text-gray-500">{store.city}, {store.state} {store.zip}</p>
-              <button
-                onClick={() => onStoreSelect(store.id)}
-                className="mt-2 text-xs text-red-700 font-semibold hover:underline block"
-              >
-                View Details →
-              </button>
-            </div>
-          </Popup>
-        </Marker>
+        />
       ))}
     </MapContainer>
   )
