@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { lazy, Suspense } from 'react'
+import { SlidersHorizontal, MapIcon, List } from 'lucide-react'
 import SearchBar from '../components/SearchBar'
 import StoreCard from '../components/StoreCard'
 import FilterPanel from '../components/FilterPanel'
@@ -7,6 +8,7 @@ import StoreDetailsModal from '../components/StoreDetailsModal'
 import { useAuthStore } from '../store/authStore'
 import { useFilterStore } from '../store/filterStore'
 import { useMapStore } from '../store/mapStore'
+import type { MapLayer } from '../store/mapStore'
 import {
   getStores,
   getStoresNearby,
@@ -16,7 +18,7 @@ import {
   removeFromFavorites,
   getFavoriteStores,
 } from '../services/storeService'
-import type { Store } from '../types'
+import type { Store, UserLocation } from '../types'
 
 // Lazy load map to avoid SSR issues
 const Map = lazy(() => import('../components/Map'))
@@ -26,14 +28,14 @@ type ViewMode = 'map' | 'list'
 export default function Home() {
   const { user, isAuthenticated } = useAuthStore()
   const { filters, searchQuery, setSearchQuery, setLocation } = useFilterStore()
-  const { center, zoom, selectedStoreId, setCenter, setZoom, setSelectedStoreId } = useMapStore()
+  const { center, zoom, selectedStoreId, mapLayer, showTraffic, setCenter, setZoom, setSelectedStoreId, setMapLayer, setShowTraffic } = useMapStore()
 
   const [stores, setStores] = useState<Store[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>('map')
   const [filterOpen, setFilterOpen] = useState(false)
-  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null)
+  const [userLocation, setUserLocation] = useState<UserLocation | null>(null)
   const [geoLoading, setGeoLoading] = useState(false)
   const [favoritedIds, setFavoritedIds] = useState<Set<string>>(new Set())
   const [selectedStore, setSelectedStore] = useState<Store | null>(null)
@@ -106,8 +108,8 @@ export default function Home() {
     setGeoLoading(true)
     navigator.geolocation.getCurrentPosition(
       async (position) => {
-        const { latitude, longitude } = position.coords
-        setUserLocation({ latitude, longitude })
+        const { latitude, longitude, accuracy } = position.coords
+        setUserLocation({ latitude, longitude, accuracy: accuracy ?? undefined })
         setLocation(latitude, longitude)
         setCenter([latitude, longitude])
         setZoom(13)
@@ -189,7 +191,7 @@ export default function Home() {
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden">
       {/* Search & Controls */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3 space-y-2">
+      <div className="bg-white border-b border-gray-100 px-4 py-3 space-y-2">
         <SearchBar
           value={searchQuery}
           onChange={setSearchQuery}
@@ -202,20 +204,21 @@ export default function Home() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setFilterOpen(!filterOpen)}
-                className={`flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border transition-colors ${
+                className={`flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border transition-all ${
                   hasActiveFilters
-                    ? 'border-red-500 bg-red-50 text-red-700'
-                    : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                    ? 'border-[#E8192C] bg-red-50 text-[#E8192C]'
+                    : 'border-gray-200 text-gray-500 hover:border-gray-300'
                 }`}
               >
-                ⚙️ Filters
+                <SlidersHorizontal size={14} />
+                Filters
                 {hasActiveFilters && (
-                  <span className="bg-red-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  <span className="bg-[#E8192C] text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
                     {(filters.productIds?.length ?? 0) + (filters.storeType ? 1 : 0)}
                   </span>
                 )}
               </button>
-              <span className="text-sm text-gray-500">
+              <span className="text-gray-400 text-xs font-medium">
                 {loading ? 'Loading...' : `${sortedStores.length} stores`}
               </span>
             </div>
@@ -224,23 +227,23 @@ export default function Home() {
             <div className="flex border border-gray-200 rounded-lg overflow-hidden">
               <button
                 onClick={() => setViewMode('map')}
-                className={`px-3 py-1.5 text-sm transition-colors ${
+                className={`px-3 py-1.5 text-sm transition-colors flex items-center gap-1.5 ${
                   viewMode === 'map'
-                    ? 'bg-red-700 text-white'
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? 'bg-[#E8192C] text-white'
+                    : 'text-gray-500 hover:bg-gray-50'
                 }`}
               >
-                🗺️ Map
+                <MapIcon size={13} /> Map
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`px-3 py-1.5 text-sm transition-colors ${
+                className={`px-3 py-1.5 text-sm transition-colors flex items-center gap-1.5 ${
                   viewMode === 'list'
-                    ? 'bg-red-700 text-white'
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? 'bg-[#E8192C] text-white'
+                    : 'text-gray-500 hover:bg-gray-50'
                 }`}
               >
-                📋 List
+                <List size={13} /> List
               </button>
             </div>
           </div>
@@ -257,9 +260,9 @@ export default function Home() {
 
       {/* Error Banner */}
       {error && (
-        <div className="bg-red-50 border-b border-red-200 px-4 py-2 text-red-700 text-sm">
+        <div className="bg-red-50 border-b border-red-100 px-4 py-2 text-[#E8192C] text-sm flex items-center justify-between">
           {error}
-          <button onClick={() => setError(null)} className="ml-2 hover:underline text-red-600">
+          <button onClick={() => setError(null)} className="ml-2 hover:underline text-[#E8192C]">
             Dismiss
           </button>
         </div>
@@ -277,7 +280,13 @@ export default function Home() {
                 userLocation={userLocation}
                 center={center}
                 zoom={zoom}
+                mapLayer={mapLayer}
+                showTraffic={showTraffic}
                 onStoreSelect={handleStoreSelect}
+                onMapLayerChange={(layer: MapLayer) => setMapLayer(layer)}
+                onTrafficToggle={() => setShowTraffic(!showTraffic)}
+                onGeolocate={handleGeolocate}
+                geoLoading={geoLoading}
               />
             </Suspense>
 
@@ -289,7 +298,9 @@ export default function Home() {
                 </div>
               ) : sortedStores.length === 0 ? (
                 <div className="flex-1 flex flex-col items-center justify-center text-center p-6 text-gray-500">
-                  <p className="text-4xl mb-2">🥤</p>
+                  <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-2">
+                    <span className="text-[#E8192C] font-black text-lg">DC</span>
+                  </div>
                   <p className="font-medium">No stores found</p>
                   <p className="text-sm mt-1">Try expanding your search radius or adjusting filters</p>
                 </div>
@@ -335,7 +346,9 @@ export default function Home() {
               </div>
             ) : sortedStores.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-48 text-gray-500 text-center p-6">
-                <p className="text-4xl mb-2">🥤</p>
+                <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-2">
+                  <span className="text-[#E8192C] font-black text-lg">DC</span>
+                </div>
                 <p className="font-medium">No stores found</p>
                 <p className="text-sm mt-1">Try a different search or adjust filters</p>
               </div>
