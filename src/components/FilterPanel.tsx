@@ -12,7 +12,16 @@ const PRODUCT_OPTIONS = [
   { id: 'DC_2L_BOTTLE', label: '2L Bottle' },
   { id: 'DC_6PACK_12OZ', label: '6-Pack' },
   { id: 'DC_12PACK_12OZ', label: '12-Pack' },
+  { id: 'DC_24PACK_12OZ', label: '24-Pack' },
+  { id: 'DC_30PACK_12OZ', label: '30-Pack' },
+  { id: 'DC_8PACK_MINI', label: 'Mini 8-Pack' },
   { id: 'DC_FOUNTAIN', label: 'Fountain' },
+  { id: 'DC_FEISTY_CHERRY_20OZ', label: 'Feisty Cherry' },
+  { id: 'DC_GINGER_LIME_20OZ', label: 'Ginger Lime' },
+  { id: 'DC_TWISTED_MANGO_20OZ', label: 'Twisted Mango' },
+  { id: 'DCZS_20OZ_BOTTLE', label: 'Zero Sugar 20oz' },
+  { id: 'DCZS_2L_BOTTLE', label: 'Zero Sugar 2L' },
+  { id: 'DCZS_12PACK_12OZ', label: 'Zero Sugar 12-Pack' },
 ]
 
 const STORE_TYPE_OPTIONS = [
@@ -53,13 +62,13 @@ export default function FilterPanel({ isOpen, onClose, resultCount }: FilterPane
     <>
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-black/40 z-40 transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 bg-black/40 z-[2000] transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={onClose}
       />
 
       {/* Bottom sheet */}
       <div
-        className={`fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl shadow-2xl transition-transform duration-300 ${
+        className={`fixed bottom-0 left-0 right-0 z-[2001] bg-white rounded-t-2xl shadow-2xl transition-transform duration-300 ${
           isOpen ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
