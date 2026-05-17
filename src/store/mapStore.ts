@@ -19,8 +19,8 @@ interface MapState {
 }
 
 export const useMapStore = create<MapState>((set) => ({
-  center: [39.8283, -98.5795],
-  zoom: 4,
+  center: [40.4406, -79.9959],
+  zoom: 12,
   selectedStoreId: null,
   isMapLoading: false,
   mapLayer: 'street',

@@ -68,7 +68,7 @@ export default function StoreDetailsModal({ store, onClose, distanceKm }: StoreD
     <>
       <div className="fixed inset-0 bg-black/40 z-40" onClick={onClose} aria-hidden="true" />
 
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:static md:z-auto bg-white rounded-t-2xl md:rounded-xl shadow-2xl max-h-[80vh] overflow-y-auto">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl shadow-2xl max-h-[80vh] overflow-y-auto">
         {/* Drag handle (mobile) */}
         <div className="md:hidden flex justify-center pt-3 pb-1">
           <div className="w-10 h-1 bg-gray-200 rounded-full" />
