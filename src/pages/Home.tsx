@@ -28,7 +28,16 @@ const PRODUCT_LABELS: Record<string, string> = {
   DC_2L_BOTTLE: '2L Bottle',
   DC_6PACK_12OZ: '6-Pack',
   DC_12PACK_12OZ: '12-Pack',
+  DC_24PACK_12OZ: '24-Pack',
+  DC_30PACK_12OZ: '30-Pack',
+  DC_8PACK_MINI: 'Mini 8-Pack',
   DC_FOUNTAIN: 'Fountain',
+  DC_FEISTY_CHERRY_20OZ: 'Feisty Cherry',
+  DC_GINGER_LIME_20OZ: 'Ginger Lime',
+  DC_TWISTED_MANGO_20OZ: 'Twisted Mango',
+  DCZS_20OZ_BOTTLE: 'Zero Sugar 20oz',
+  DCZS_2L_BOTTLE: 'Zero Sugar 2L',
+  DCZS_12PACK_12OZ: 'Zero Sugar 12-Pack',
 }
 
 const STORE_TYPE_LABELS: Record<string, string> = {
