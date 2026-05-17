@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { SlidersHorizontal, MapIcon, List, X } from 'lucide-react'
 import SearchBar from '../components/SearchBar'
 import StoreCard from '../components/StoreCard'

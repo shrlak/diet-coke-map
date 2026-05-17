@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { SearchFilters } from '../types'
+import type { SearchFilters } from '../types'
 
 interface FilterState {
   filters: SearchFilters
