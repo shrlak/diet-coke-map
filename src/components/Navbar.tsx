@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { signOut } from '../services/supabase'
+import { Menu, X, MapPin, Heart, User, LogOut, LogIn } from 'lucide-react'
 
 export default function Navbar() {
   const { user, isAuthenticated } = useAuthStore()
@@ -15,71 +16,85 @@ export default function Navbar() {
   }
 
   return (
-    <header className="bg-red-700 text-white shadow-md">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 font-bold text-xl hover:text-red-100 transition-colors">
-          <span className="text-2xl">🥤</span>
-          <span className="hidden sm:block">Diet Coke Locator</span>
-          <span className="sm:hidden">DCL</span>
+    <header className="bg-[#1A1A1A] text-white">
+      <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-full bg-[#E8192C] flex items-center justify-center shrink-0">
+            <span className="text-white text-[10px] font-black tracking-tight">DC</span>
+          </div>
+          <span className="font-bold text-sm tracking-tight">
+            Diet Coke <span className="text-[#E8192C]">Locator</span>
+          </span>
         </Link>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <Link to="/" className="hover:text-red-100 transition-colors">Find Stores</Link>
+        <nav className="hidden md:flex items-center gap-5 text-sm">
+          <Link to="/" className="text-gray-300 hover:text-white transition-colors flex items-center gap-1.5">
+            <MapPin size={14} />
+            Find Stores
+          </Link>
           {isAuthenticated && (
-            <Link to="/favorites" className="hover:text-red-100 transition-colors">Favorites</Link>
+            <Link to="/favorites" className="text-gray-300 hover:text-white transition-colors flex items-center gap-1.5">
+              <Heart size={14} />
+              Favorites
+            </Link>
           )}
-          <Link to="/about" className="hover:text-red-100 transition-colors">About</Link>
           {isAuthenticated ? (
             <div className="flex items-center gap-3">
-              <Link to="/profile" className="hover:text-red-100 transition-colors">
+              <Link to="/profile" className="text-gray-300 hover:text-white transition-colors flex items-center gap-1.5">
+                <User size={14} />
                 {user?.full_name || user?.email?.split('@')[0] || 'Profile'}
               </Link>
               <button
                 onClick={handleLogout}
-                className="bg-white text-red-700 px-3 py-1.5 rounded-md text-sm font-semibold hover:bg-red-50 transition-colors"
+                className="flex items-center gap-1.5 bg-[#E8192C] hover:bg-[#c8102e] text-white px-3 py-1.5 rounded-md text-sm font-medium transition-colors"
               >
+                <LogOut size={13} />
                 Logout
               </button>
             </div>
           ) : (
             <Link
               to="/login"
-              className="bg-white text-red-700 px-3 py-1.5 rounded-md text-sm font-semibold hover:bg-red-50 transition-colors"
+              className="flex items-center gap-1.5 bg-[#E8192C] hover:bg-[#c8102e] text-white px-3 py-1.5 rounded-md text-sm font-medium transition-colors"
             >
+              <LogIn size={13} />
               Login
             </Link>
           )}
         </nav>
 
-        {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden p-1"
+          className="md:hidden text-gray-300 hover:text-white p-1"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
-          <div className="w-6 h-0.5 bg-white mb-1.5" />
-          <div className="w-6 h-0.5 bg-white mb-1.5" />
-          <div className="w-6 h-0.5 bg-white" />
+          {menuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden border-t border-red-600 px-4 py-3 flex flex-col gap-3 text-sm">
-          <Link to="/" onClick={() => setMenuOpen(false)} className="hover:text-red-100">Find Stores</Link>
+        <div className="md:hidden border-t border-white/10 px-4 py-3 flex flex-col gap-1 text-sm bg-[#1A1A1A]">
+          <Link to="/" onClick={() => setMenuOpen(false)} className="text-gray-300 hover:text-white transition-colors flex items-center gap-2 py-2">
+            <MapPin size={15} /> Find Stores
+          </Link>
           {isAuthenticated && (
-            <Link to="/favorites" onClick={() => setMenuOpen(false)} className="hover:text-red-100">Favorites</Link>
+            <Link to="/favorites" onClick={() => setMenuOpen(false)} className="text-gray-300 hover:text-white transition-colors flex items-center gap-2 py-2">
+              <Heart size={15} /> Favorites
+            </Link>
           )}
-          <Link to="/about" onClick={() => setMenuOpen(false)} className="hover:text-red-100">About</Link>
           {isAuthenticated ? (
             <>
-              <Link to="/profile" onClick={() => setMenuOpen(false)} className="hover:text-red-100">Profile</Link>
-              <button onClick={handleLogout} className="text-left hover:text-red-100">Logout</button>
+              <Link to="/profile" onClick={() => setMenuOpen(false)} className="text-gray-300 hover:text-white transition-colors flex items-center gap-2 py-2">
+                <User size={15} /> Profile
+              </Link>
+              <button onClick={handleLogout} className="text-gray-300 hover:text-white transition-colors flex items-center gap-2 py-2 text-left">
+                <LogOut size={15} /> Logout
+              </button>
             </>
           ) : (
-            <Link to="/login" onClick={() => setMenuOpen(false)} className="hover:text-red-100">Login</Link>
+            <Link to="/login" onClick={() => setMenuOpen(false)} className="text-gray-300 hover:text-white transition-colors flex items-center gap-2 py-2">
+              <LogIn size={15} /> Login
+            </Link>
           )}
         </div>
       )}

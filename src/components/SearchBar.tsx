@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { Search, MapPin, X } from 'lucide-react'
 
 interface SearchBarProps {
   value: string
@@ -15,7 +16,7 @@ export default function SearchBar({
   onSearch,
   onGeolocate,
   geoLoading,
-  placeholder = 'Search by city, zip, or address...',
+  placeholder = 'Search Pittsburgh by address, zip, or neighborhood...',
 }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -28,7 +29,7 @@ export default function SearchBar({
   return (
     <div className="flex gap-2">
       <div className="relative flex-1">
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">🔍</span>
+        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
         <input
           ref={inputRef}
           type="text"
@@ -36,21 +37,21 @@ export default function SearchBar({
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className="w-full pl-8 pr-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent text-sm bg-white"
+          className="w-full pl-9 pr-8 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E8192C]/30 focus:border-[#E8192C] text-sm bg-white transition-all"
         />
         {value && (
           <button
             onClick={() => onChange('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-lg leading-none"
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
           >
-            ×
+            <X size={14} />
           </button>
         )}
       </div>
 
       <button
         onClick={() => onSearch(value)}
-        className="px-4 py-2.5 bg-red-700 text-white text-sm font-medium rounded-lg hover:bg-red-800 transition-colors shrink-0"
+        className="px-4 py-2.5 bg-[#E8192C] text-white text-sm font-semibold rounded-lg hover:bg-[#c8102e] transition-colors shrink-0"
       >
         Search
       </button>
@@ -58,10 +59,14 @@ export default function SearchBar({
       <button
         onClick={onGeolocate}
         disabled={geoLoading}
-        className="px-3 py-2.5 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-60 shrink-0"
+        className="px-3 py-2.5 border border-gray-200 rounded-lg text-gray-500 hover:bg-gray-50 hover:text-[#E8192C] hover:border-[#E8192C]/40 transition-all disabled:opacity-50 shrink-0"
         title="Use my location"
       >
-        {geoLoading ? '...' : '📍'}
+        {geoLoading ? (
+          <span className="block w-4 h-4 border-2 border-gray-200 border-t-[#E8192C] rounded-full animate-spin" />
+        ) : (
+          <MapPin size={16} />
+        )}
       </button>
     </div>
   )

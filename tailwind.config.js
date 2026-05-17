@@ -7,10 +7,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        'diet-coke-red': '#C8102E',
+        'coke-red': '#E8192C',
+        'coke-dark': '#1A1A1A',
+        'coke-light': '#F7F7F7',
       },
       fontFamily: {
-        sans: ['system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
       },
     },
   },
