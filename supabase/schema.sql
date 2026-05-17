@@ -156,8 +156,8 @@ INSERT INTO products (name, category, volume_ml, sku) VALUES
 ON CONFLICT (sku) DO NOTHING;
 
 -- Pittsburgh-area stores — real verified locations sourced from chain store locators
--- (Giant Eagle, GetGo, Sheetz, CVS, Walgreens, Target, Walmart, Aldi)
--- Additional stores verified via official chain websites, Yelp, and Google Maps (May 2026)
+-- (Giant Eagle, GetGo, Sheetz, CVS, Walgreens, Target, Walmart, Aldi, 7-Eleven, Sunoco)
+-- Verified via official chain websites, Yelp, and Google Maps (May 2026)
 INSERT INTO stores (name, address, city, state, zip, latitude, longitude, phone, store_type) VALUES
   -- GetGo (10 locations — Giant Eagle fuel & convenience brand)
   ('GetGo (Ben Avon Heights)', '156 Ben Avon Heights Rd', 'Pittsburgh', 'PA', '15237', 40.50460, -80.05240, '(412) 761-8460', 'convenience'),
@@ -182,15 +182,16 @@ INSERT INTO stores (name, address, city, state, zip, latitude, longitude, phone,
   ('Sheetz (Ross Township / Babcock)', '3025 Babcock Blvd', 'Pittsburgh', 'PA', '15237', 40.51720, -80.02080, '(412) 635-1000', 'convenience'),
   ('Sheetz (Stowe / Grand Ave)', '5800 Grand Ave', 'Pittsburgh', 'PA', '15225', 40.48860, -80.07110, '(412) 375-2104', 'convenience'),
 
-  -- CVS Pharmacy (10 locations)
+  -- CVS Pharmacy (9 locations — CVS at 3422 Forbes Ave Oakland removed: confirmed CLOSED per Yelp Apr 2026)
   ('CVS Pharmacy (Baldwin / Clairton)', '5242 Clairton Blvd', 'Pittsburgh', 'PA', '15236', 40.35770, -79.98530, '(412) 882-5480', 'drugstore'),
   ('CVS Pharmacy (Carnegie / W Steuben)', '70 W Steuben St', 'Pittsburgh', 'PA', '15205', 40.42530, -80.08760, '(412) 429-0360', 'drugstore'),
   ('CVS Pharmacy (Dormont / W Liberty)', '3075 W Liberty Ave', 'Pittsburgh', 'PA', '15216', 40.40160, -80.01570, '(412) 531-3240', 'drugstore'),
   ('CVS Pharmacy (Downtown / Fifth Ave)', '242 Fifth Ave', 'Pittsburgh', 'PA', '15222', 40.44180, -79.99890, '(412) 391-4430', 'drugstore'),
   ('CVS Pharmacy (Downtown / Smithfield)', '482 Smithfield St', 'Pittsburgh', 'PA', '15219', 40.43810, -79.99580, '(412) 281-3560', 'drugstore'),
   ('CVS Pharmacy (McCandless)', '9805 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.58200, -80.03400, '(412) 366-7290', 'drugstore'),
-  ('CVS Pharmacy (Oakland / Centre Ave)', '4610 Centre Ave', 'Pittsburgh', 'PA', '15213', 40.45300, -79.93710, '(412) 682-7400', 'drugstore'),
-  ('CVS Pharmacy (Oakland / Forbes Ave)', '3422 Forbes Ave', 'Pittsburgh', 'PA', '15213', 40.43876, -79.96023, '(412) 682-4240', 'drugstore'),
+  -- Corrected longitude: -79.93710 in prior seed was east of Giant Eagle at 5550 Centre Ave;
+  -- CVS sits at Centre Ave / Craig St intersection per cvs.com + Yellow Pages
+  ('CVS Pharmacy (Oakland / Centre Ave)', '4610 Centre Ave', 'Pittsburgh', 'PA', '15213', 40.45350, -79.95000, '(412) 682-7400', 'drugstore'),
   ('CVS Pharmacy (Penn Hills / Frankstown)', '10600 Frankstown Rd', 'Pittsburgh', 'PA', '15235', 40.46050, -79.83150, '(412) 244-7360', 'drugstore'),
   ('CVS Pharmacy (Upper St Clair)', '1740 Washington Rd', 'Pittsburgh', 'PA', '15241', 40.34670, -80.04910, '(412) 831-3430', 'drugstore'),
 
@@ -262,7 +263,52 @@ INSERT INTO stores (name, address, city, state, zip, latitude, longitude, phone,
   ('Sheetz (Pleasant Hills / Curry Hollow)', '251 Curry Hollow Rd', 'Pittsburgh', 'PA', '15236', 40.33643, -79.97151, '(412) 675-1712', 'convenience'),
 
   -- Additional Walgreens location (verified walgreens.com May 2026)
-  ('Walgreens (Robinson / Enterprise Dr)', '130 Enterprise Dr', 'Pittsburgh', 'PA', '15275', 40.50280, -80.19620, '(412) 262-2910', 'drugstore')
+  ('Walgreens (Robinson / Enterprise Dr)', '130 Enterprise Dr', 'Pittsburgh', 'PA', '15275', 40.50280, -80.19620, '(412) 262-2910', 'drugstore'),
+
+  -- Oakland / CMU / Pitt campus stores (verified May 2026)
+  -- 7-eleven.com store #40106; yelp.com/biz/7-eleven-pittsburgh-31 (Apr 2026)
+  ('7-Eleven', '195 N Craig St', 'Pittsburgh', 'PA', '15213', 40.44800, -79.95020, NULL, 'convenience'),
+  -- sunoco.com station #0859331103; yelp.com/biz/sunoco-pittsburgh-8 (Dec 2025)
+  -- Widely cited as the only full-service gas station in Oakland proper
+  ('Sunoco', '301 Craft Ave', 'Pittsburgh', 'PA', '15213', 40.44080, -79.95660, NULL, 'gas_station'),
+
+  -- Philadelphia (verified via chain websites and Yelp May 2026)
+  ('Wawa',                        '1900 Market St',        'Philadelphia', 'PA', '19103', 39.95309, -75.17245, NULL, 'convenience'),
+  ('CVS Pharmacy',                '1826 Chestnut St',      'Philadelphia', 'PA', '19103', 39.94980, -75.16973, NULL, 'drugstore'),
+  ('Wawa',                        '3300 Market St',        'Philadelphia', 'PA', '19104', 39.95228, -75.20207, NULL, 'convenience'),
+  ('Walgreens',                   '1524 Chestnut St',      'Philadelphia', 'PA', '19102', 39.94952, -75.16478, NULL, 'drugstore'),
+  ('Giant Food Stores',           '4000 City Ave',         'Philadelphia', 'PA', '19131', 39.98125, -75.22028, NULL, 'grocery'),
+
+  -- Harrisburg (verified May 2026)
+  ('Weis Markets',                '3885 Union Deposit Rd', 'Harrisburg',   'PA', '17109', 40.30256, -76.82157, NULL, 'grocery'),
+  ('Turkey Hill Minit Market',    '2941 Paxton St',        'Harrisburg',   'PA', '17111', 40.24993, -76.83754, NULL, 'convenience'),
+  -- 4651 Lindle Rd: confirmed at yelp.com/biz/sheetz-harrisburg-6, gasbuddy.com/station/185719
+  ('Sheetz',                      '4651 Lindle Rd',        'Harrisburg',   'PA', '17111', 40.25380, -76.86640, NULL, 'convenience'),
+
+  -- Allentown / Whitehall (verified May 2026)
+  ('CVS Pharmacy',                '737 Hamilton St',       'Allentown',    'PA', '18101', 40.60214, -75.47131, NULL, 'drugstore'),
+  ('Weis Markets',                '1425 Tilghman St',      'Allentown',    'PA', '18102', 40.59841, -75.49132, NULL, 'grocery'),
+  ('Sheetz',                      '2222 MacArthur Rd',     'Whitehall',    'PA', '18052', 40.65298, -75.49503, NULL, 'convenience'),
+
+  -- State College (verified May 2026)
+  ('Sheetz',                      '418 E College Ave',     'State College','PA', '16801', 40.79805, -77.85644, NULL, 'convenience'),
+  ('Weis Markets',                '1471 Martin St',        'State College','PA', '16803', 40.79278, -77.85813, NULL, 'grocery'),
+  ('CVS Pharmacy',                '323 S Allen St',        'State College','PA', '16801', 40.79325, -77.86073, NULL, 'drugstore'),
+
+  -- Erie (verified May 2026)
+  ('Sheetz',                      '3510 Peach St',         'Erie',         'PA', '16508', 42.08130, -80.09407, NULL, 'convenience'),
+  ('Giant Eagle',                 '2877 W 26th St',        'Erie',         'PA', '16506', 42.09706, -80.12063, NULL, 'grocery'),
+  ('Walgreens',                   '2523 Peach St',         'Erie',         'PA', '16508', 42.09127, -80.09397, NULL, 'drugstore'),
+
+  -- Reading (verified May 2026)
+  ('Weis Markets',                '1000 Morgantown Rd',    'Reading',      'PA', '19607', 40.32659, -75.95290, NULL, 'grocery'),
+  -- 2246 Lancaster Pike: confirmed at yelp.com/biz/sheetz-reading-3, gasbuddy.com/station/61261
+  ('Sheetz',                      '2246 Lancaster Pike',   'Reading',      'PA', '19607', 40.30695, -75.97932, NULL, 'convenience'),
+
+  -- Lancaster (verified May 2026)
+  ('Weis Markets',                '325 Centerville Rd',    'Lancaster',    'PA', '17601', 40.04920, -76.38370, NULL, 'grocery'),
+  ('Sheetz',                      '3101 Columbia Ave',     'Lancaster',    'PA', '17603', 40.03680, -76.33170, NULL, 'convenience'),
+  ('CVS Pharmacy',                '45 W Chestnut St',      'Lancaster',    'PA', '17603', 40.03746, -76.30856, NULL, 'drugstore')
 
 ON CONFLICT DO NOTHING;
 
