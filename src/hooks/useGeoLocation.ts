@@ -32,7 +32,7 @@ export const useGeoLocation = (): UseGeoLocationState => {
 
   const handleSuccess = useCallback((position: GeolocationPosition) => {
     const { latitude, longitude, accuracy } = position.coords
-    setLocation({ latitude, longitude, accuracy })
+    setLocation({ latitude, longitude, accuracy: accuracy ?? undefined })
     setLoading(false)
     setError(null)
   }, [])
@@ -82,6 +82,7 @@ export const useGeoLocation = (): UseGeoLocationState => {
       watchIdRef.current = null
     }
     setIsWatching(false)
+    setLoading(false)
   }, [])
 
   useEffect(() => {
