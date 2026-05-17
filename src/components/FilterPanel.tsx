@@ -22,6 +22,13 @@ const PRODUCT_OPTIONS = [
   { id: 'DCZS_20OZ_BOTTLE', label: 'Zero Sugar 20oz' },
   { id: 'DCZS_2L_BOTTLE', label: 'Zero Sugar 2L' },
   { id: 'DCZS_12PACK_12OZ', label: 'Zero Sugar 12-Pack' },
+  { id: 'DC_CAFFEINE_FREE_20OZ', label: 'Caffeine Free 20oz' },
+  { id: 'DC_CAFFEINE_FREE_2L', label: 'Caffeine Free 2L' },
+  { id: 'DC_CAFFEINE_FREE_12PACK', label: 'Caffeine Free 12-Pack' },
+  { id: 'DC_CHERRY_20OZ', label: 'Cherry 20oz' },
+  { id: 'DC_VANILLA_20OZ', label: 'Vanilla 20oz' },
+  { id: 'DC_LIME_20OZ', label: 'Lime 20oz' },
+  { id: 'DC_16OZ_BOTTLE', label: '16oz Bottle' },
 ]
 
 const STORE_TYPE_OPTIONS = [

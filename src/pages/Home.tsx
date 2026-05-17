@@ -38,6 +38,13 @@ const PRODUCT_LABELS: Record<string, string> = {
   DCZS_20OZ_BOTTLE: 'Zero Sugar 20oz',
   DCZS_2L_BOTTLE: 'Zero Sugar 2L',
   DCZS_12PACK_12OZ: 'Zero Sugar 12-Pack',
+  DC_CAFFEINE_FREE_20OZ: 'Caffeine Free 20oz',
+  DC_CAFFEINE_FREE_2L: 'Caffeine Free 2L',
+  DC_CAFFEINE_FREE_12PACK: 'Caffeine Free 12-Pack',
+  DC_CHERRY_20OZ: 'Cherry 20oz',
+  DC_VANILLA_20OZ: 'Vanilla 20oz',
+  DC_LIME_20OZ: 'Lime 20oz',
+  DC_16OZ_BOTTLE: '16oz Bottle',
 }
 
 const STORE_TYPE_LABELS: Record<string, string> = {
