@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Circle, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import type { Store, UserLocation } from '../types'
@@ -155,28 +155,14 @@ export default function Map({
           </>
         )}
 
-        {/* Store markers */}
+        {/* Store markers — clicking opens StoreDetailsModal directly */}
         {stores.map((store) => (
           <Marker
             key={store.id}
             position={[store.latitude, store.longitude]}
             icon={store.id === selectedStoreId ? selectedStoreIcon : storeIcon}
             eventHandlers={{ click: () => onStoreSelect(store.id) }}
-          >
-            <Popup>
-              <div className="min-w-[160px]">
-                <p className="font-semibold text-sm">{store.name}</p>
-                <p className="text-xs text-gray-500 mt-1">{store.address}</p>
-                <p className="text-xs text-gray-500">{store.city}, {store.state} {store.zip}</p>
-                <button
-                  onClick={() => onStoreSelect(store.id)}
-                  className="mt-2 text-xs text-[#E8192C] font-semibold hover:underline block"
-                >
-                  View Details →
-                </button>
-              </div>
-            </Popup>
-          </Marker>
+          />
         ))}
       </MapContainer>
 
