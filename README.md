@@ -1,158 +1,134 @@
 # Diet Coke Store Locator
 
-A web application that helps users find Diet Coke retailers across the United States, view store hours, and discover available product types.
+Find Diet Coke retailers near you — search by address, zip code, or GPS, filter by distance and product type, and save your favorite stores.
 
-## 🚀 Quick Start
+**Live site:** https://shrlak.github.io/diet-coke-map/
 
-### Prerequisites
-- Node.js 18+ and npm
-- A Supabase account (free at https://supabase.com)
-- Git
+---
 
-### Local Development Setup
+## What It Does
 
-1. **Clone and install dependencies:**
+The app shows an interactive map of Diet Coke retailers across the United States. Key features:
+
+- Search by address, zip code, or current location
+- Filter by distance (5, 10, or 25 miles) and product availability
+- View store hours, phone number, and available products
+- Save favorite stores (requires a free account)
+- Works on mobile, tablet, and desktop
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React 19 + TypeScript + Vite |
+| Styling | Tailwind CSS 4 |
+| State | Zustand 5 |
+| Maps | Leaflet + react-leaflet |
+| Backend | Supabase (PostgreSQL + Auth) |
+| Deployment | GitHub Pages via GitHub Actions |
+| Routing | React Router 7 |
+
+---
+
+## Getting Started
+
+**Prerequisites:** Node.js 20+, npm, a free [Supabase](https://supabase.com) account
+
 ```bash
-git clone https://github.com/yourusername/diet-coke-map.git
+git clone https://github.com/shrlak/diet-coke-map.git
 cd diet-coke-map
 npm install
 ```
 
-2. **Set up environment variables:**
+Copy the environment template and fill in your credentials:
+
 ```bash
 cp .env.example .env.local
 ```
-Add your Supabase credentials to `.env.local`
 
-3. **Start the development server:**
 ```bash
 npm run dev
+# Open http://localhost:5173
 ```
-Open [http://localhost:5173](http://localhost:5173) in your browser
-
-## 📋 Features
-
-### MVP (Phase 1)
-- ✅ User authentication (email/password + Google + Apple OAuth)
-- ✅ Interactive map with store locations
-- ✅ Store search by address, zip code, or current location
-- ✅ Distance-based filtering (5, 10, 25 miles)
-- ✅ Product availability filtering
-- ✅ Store details (hours, phone, products, distance)
-- ✅ Save favorite stores (requires login)
-- ✅ Responsive design (mobile, tablet, desktop)
-
-### Phase 2 (Planned)
-- Crowdsourced store updates
-- Admin dashboard for data management
-- Expand to multiple states
-- SEO improvements
-
-### Phase 3 (Future)
-- React Native mobile app (iOS + Android)
-- Real-time inventory updates
-- Stock alerts & notifications
-- Store ratings & reviews
-
-## 🛠️ Tech Stack
-
-- **Frontend:** React 18 + TypeScript + Vite
-- **Styling:** Tailwind CSS
-- **State Management:** Zustand
-- **Maps:** Leaflet (free) or Mapbox GL (optional)
-- **Backend:** Supabase (PostgreSQL + REST API + Auth)
-- **Deployment:** GitHub Pages
-- **Routing:** React Router
-
-## 📁 Project Structure
-
-```
-src/
-├── components/          # Reusable React components
-├── pages/              # Page-level components
-├── services/           # Supabase client & utilities
-├── hooks/              # Custom React hooks
-├── store/              # Zustand state management
-├── types/              # TypeScript type definitions
-├── App.tsx             # Main app component
-└── main.tsx            # React entry point
-```
-
-## 🗄️ Supabase Setup
-
-### 1. Create Supabase Project
-- Go to [supabase.com](https://supabase.com)
-- Click "New Project"
-- Name it "diet-coke-map"
-- Choose your region (US recommended)
-- Create project
-
-### 2. Create Database Tables
-See `docs/SUPABASE_SETUP.md` for detailed SQL schema and instructions
-
-### 3. Set Up Authentication
-- In Supabase dashboard, go to "Auth" → "Providers"
-- Enable "Email" (default is on)
-- Add Google OAuth provider
-- Add Apple Sign-In provider
-- Get your project URL and anon key from Settings → API
-
-### 4. Update .env.local
-```
-VITE_SUPABASE_URL=https://[project-id].supabase.co
-VITE_SUPABASE_ANON_KEY=[your-anon-key]
-```
-
-## 📦 Available Scripts
-
-```bash
-# Development
-npm run dev              # Start dev server
-npm run preview         # Preview production build
-
-# Building
-npm run build           # Build for production
-
-# Code Quality
-npm run type-check      # TypeScript type checking
-npm run lint           # Run ESLint
-npm run lint:fix       # Fix ESLint errors
-
-# Deployment
-git push origin main   # Triggers GitHub Actions deployment to GitHub Pages
-```
-
-## 🚀 Deployment
-
-### GitHub Pages Setup
-1. Enable GitHub Pages in repo settings
-2. Set source to "GitHub Actions"
-3. Ensure `.github/workflows/deploy.yml` exists
-4. Push to `main` branch to trigger deployment
-
-## 📝 Development Workflow
-
-1. Create feature branch: `git checkout -b feature/store-search`
-2. Make changes and test locally
-3. Commit with clear messages: `git commit -m "Add store search by zip code"`
-4. Push to branch: `git push origin feature/store-search`
-5. Create Pull Request on GitHub
-6. Code review and merge to `main` to deploy
-
-## 🎯 Roadmap
-
-- **Week 1-2:** Project setup ✅ (in progress)
-- **Week 3-4:** Database & data import
-- **Week 5-6:** Authentication & user system
-- **Week 7-8:** Map & store search
-- **Week 9-10:** Store details & favorites
-- **Week 11-12:** Testing & launch
-- **Week 13+:** Expansion & mobile app
-
-## 📄 License
-
-MIT License - feel free to use this project for personal or commercial use.
 
 ---
 
-Built with ❤️ for Diet Coke fans
+## Environment Variables
+
+| Variable | Description |
+|---|---|
+| `VITE_SUPABASE_URL` | Your Supabase project URL (`https://[id].supabase.co`) |
+| `VITE_SUPABASE_ANON_KEY` | Supabase anon/public key (from Settings → API) |
+| `VITE_TOMTOM_KEY` | TomTom API key for address geocoding |
+
+For deployment, add these as GitHub repository secrets — the CI workflow reads them automatically.
+
+---
+
+## Project Structure
+
+```
+src/
+├── components/       # Map, SearchBar, FilterPanel, StoreCard, etc.
+├── pages/            # Home, Login, Favorites, Profile, About
+├── services/         # Supabase client, store data utilities
+├── hooks/            # useGeoLocation and other custom hooks
+├── store/            # Zustand stores (auth, filters, map state)
+├── types/            # TypeScript interfaces
+├── design-tokens.ts  # UI constants (colors, spacing, breakpoints)
+└── App.tsx           # Router and app shell
+```
+
+---
+
+## Database Setup
+
+See [`docs/SUPABASE_SETUP.md`](docs/SUPABASE_SETUP.md) for the full SQL schema and step-by-step Supabase configuration, including how to enable Google/Apple OAuth.
+
+---
+
+## Available Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Production build
+npm run preview      # Preview production build locally
+npm run type-check   # TypeScript type checking
+npm run lint         # Run ESLint
+npm run lint:fix     # Auto-fix ESLint errors
+```
+
+---
+
+## Deployment
+
+Pushing to `main` triggers the GitHub Actions workflow (`.github/workflows/deploy.yml`), which type-checks, builds, and deploys to GitHub Pages automatically.
+
+To set up GitHub Pages on a fork:
+1. Go to repo Settings → Pages
+2. Set source to **GitHub Actions**
+3. Add the three environment variables as repository secrets
+
+---
+
+## Roadmap
+
+**Current (MVP):** Store map, search, filtering, favorites, and user auth are live.
+
+**Next:**
+- Crowdsourced store data updates
+- Admin dashboard for data management
+- Expand store coverage beyond current markets
+
+**Future:**
+- React Native mobile app
+- Real-time inventory and stock alerts
+- Store ratings and reviews
+
+---
+
+## License
+
+MIT — free to use for personal or commercial projects.
