@@ -168,7 +168,7 @@ INSERT INTO stores (name, address, city, state, zip, latitude, longitude, phone,
   ('GetGo (Edgewood / S Braddock Ave)', '1043 S Braddock Ave', 'Pittsburgh', 'PA', '15218', 40.42650, -79.89790, '(412) 371-8460', 'convenience'),
   ('GetGo (Lawrenceville / Butler St)', '4000 Butler St', 'Pittsburgh', 'PA', '15201', 40.46990, -79.96050, '(412) 682-8460', 'convenience'),
   ('GetGo (Robinson / Steubenville Pike)', '4900 Steubenville Pike', 'Pittsburgh', 'PA', '15205', 40.45190, -80.14710, '(412) 490-8460', 'convenience'),
-  ('GetGo (Ross Township / McKnight Rd)', '7675 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.54550, -80.01650, '(412) 369-9297', 'convenience'),
+  ('GetGo (Ross Township / McKnight Rd)', '7675 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.54554, -80.01647, '(412) 369-9297', 'convenience'),
   ('GetGo (South Side / E Carson St)', '3247 E Carson St', 'Pittsburgh', 'PA', '15203', 40.42710, -79.96660, '(412) 431-8460', 'convenience'),
 
   -- Sheetz (9 locations)
@@ -272,43 +272,43 @@ INSERT INTO stores (name, address, city, state, zip, latitude, longitude, phone,
   -- Widely cited as the only full-service gas station in Oakland proper
   ('Sunoco', '301 Craft Ave', 'Pittsburgh', 'PA', '15213', 40.44080, -79.95660, NULL, 'gas_station'),
 
-  -- Philadelphia (verified via chain websites and Yelp May 2026)
-  ('Wawa',                        '1900 Market St',        'Philadelphia', 'PA', '19103', 39.95309, -75.17245, NULL, 'convenience'),
+  -- Philadelphia (verified May 2026 — 1900 Market Wawa was permanently closed; 1524 Chestnut, 4000 City Ave never had the listed chain)
+  ('Wawa',                        '1700 Sansom St',        'Philadelphia', 'PA', '19103', 39.95133, -75.17042, '(215) 564-4501', 'convenience'),
   ('CVS Pharmacy',                '1826 Chestnut St',      'Philadelphia', 'PA', '19103', 39.94980, -75.16973, NULL, 'drugstore'),
   ('Wawa',                        '3300 Market St',        'Philadelphia', 'PA', '19104', 39.95228, -75.20207, NULL, 'convenience'),
-  ('Walgreens',                   '1524 Chestnut St',      'Philadelphia', 'PA', '19102', 39.94952, -75.16478, NULL, 'drugstore'),
-  ('Giant Food Stores',           '4000 City Ave',         'Philadelphia', 'PA', '19131', 39.98125, -75.22028, NULL, 'grocery'),
+  ('Walgreens',                   '1349 Chestnut St',      'Philadelphia', 'PA', '19107', 39.94942, -75.16145, '(267) 330-0290', 'drugstore'),
+  ('Giant Food Stores',           '2550 Grant Ave',        'Philadelphia', 'PA', '19114', 40.06310, -75.00450, '(215) 464-8280', 'grocery'),
 
-  -- Harrisburg (verified May 2026)
+  -- Harrisburg (verified May 2026 — Turkey Hill: 2941 Paxton replaced with actual 2885 Paxton, Komparing.com coords)
   ('Weis Markets',                '3885 Union Deposit Rd', 'Harrisburg',   'PA', '17109', 40.30256, -76.82157, NULL, 'grocery'),
-  ('Turkey Hill Minit Market',    '2941 Paxton St',        'Harrisburg',   'PA', '17111', 40.24993, -76.83754, NULL, 'convenience'),
+  ('Turkey Hill Minit Market',    '2885 Paxton St',        'Harrisburg',   'PA', '17111', 40.25590, -76.83975, '(717) 561-1562', 'convenience'),
   -- 4651 Lindle Rd: confirmed at yelp.com/biz/sheetz-harrisburg-6, gasbuddy.com/station/185719
   ('Sheetz',                      '4651 Lindle Rd',        'Harrisburg',   'PA', '17111', 40.25380, -76.86640, NULL, 'convenience'),
 
-  -- Allentown / Whitehall (verified May 2026)
-  ('CVS Pharmacy',                '737 Hamilton St',       'Allentown',    'PA', '18101', 40.60214, -75.47131, NULL, 'drugstore'),
-  ('Weis Markets',                '1425 Tilghman St',      'Allentown',    'PA', '18102', 40.59841, -75.49132, NULL, 'grocery'),
-  ('Sheetz',                      '2222 MacArthur Rd',     'Whitehall',    'PA', '18052', 40.65298, -75.49503, NULL, 'convenience'),
+  -- Allentown / Whitehall (verified May 2026 — 737 Hamilton CVS, 1425 Tilghman Weis, 2222 MacArthur Sheetz were fabricated)
+  ('CVS Pharmacy',                '1601 W Liberty St',     'Allentown',    'PA', '18102', 40.59870, -75.50640, '(610) 820-9738', 'drugstore'),
+  ('Weis Markets',                '1500 N Cedar Crest Blvd','Allentown',   'PA', '18104', 40.60833, -75.52333, '(610) 395-0345', 'grocery'),
+  ('Sheetz',                      '5001 MacArthur Rd',     'Whitehall',    'PA', '18052', 40.67367, -75.51624, '(610) 262-8782', 'convenience'),
 
-  -- State College (verified May 2026)
-  ('Sheetz',                      '418 E College Ave',     'State College','PA', '16801', 40.79805, -77.85644, NULL, 'convenience'),
+  -- State College (verified May 2026 — 418 E College Ave Sheetz is now apartments; 323 S Allen St CVS was fabricated)
+  ('Sheetz',                      '3261 W College Ave',    'State College','PA', '16801', 40.79050, -77.91250, '(814) 234-4540', 'convenience'),
   ('Weis Markets',                '1471 Martin St',        'State College','PA', '16803', 40.79278, -77.85813, NULL, 'grocery'),
-  ('CVS Pharmacy',                '323 S Allen St',        'State College','PA', '16801', 40.79325, -77.86073, NULL, 'drugstore'),
+  ('CVS Pharmacy',                '116 W College Ave',     'State College','PA', '16801', 40.79415, -77.86150, '(814) 238-6797', 'drugstore'),
 
-  -- Erie (verified May 2026)
-  ('Sheetz',                      '3510 Peach St',         'Erie',         'PA', '16508', 42.08130, -80.09407, NULL, 'convenience'),
+  -- Erie (verified May 2026 — 3510 Peach Sheetz fabricated; 2523 Peach Walgreens is actually at 3727 Peach)
+  ('Sheetz',                      '8180 Perry Hwy',        'Erie',         'PA', '16509', 42.11383, -80.08816, '(814) 983-5727', 'convenience'),
   ('Giant Eagle',                 '2877 W 26th St',        'Erie',         'PA', '16506', 42.09706, -80.12063, NULL, 'grocery'),
-  ('Walgreens',                   '2523 Peach St',         'Erie',         'PA', '16508', 42.09127, -80.09397, NULL, 'drugstore'),
+  ('Walgreens',                   '3727 Peach St',         'Erie',         'PA', '16508', 42.09739, -80.08103, '(814) 864-0292', 'drugstore'),
 
-  -- Reading (verified May 2026)
-  ('Weis Markets',                '1000 Morgantown Rd',    'Reading',      'PA', '19607', 40.32659, -75.95290, NULL, 'grocery'),
+  -- Reading (verified May 2026 — 1000 Morgantown Rd Weis was fabricated; #50 is at 2020 N 13th)
+  ('Weis Markets',                '2020 N 13th St',        'Reading',      'PA', '19604', 40.35330, -75.92680, '(610) 929-2452', 'grocery'),
   -- 2246 Lancaster Pike: confirmed at yelp.com/biz/sheetz-reading-3, gasbuddy.com/station/61261
   ('Sheetz',                      '2246 Lancaster Pike',   'Reading',      'PA', '19607', 40.30695, -75.97932, NULL, 'convenience'),
 
-  -- Lancaster (verified May 2026)
-  ('Weis Markets',                '325 Centerville Rd',    'Lancaster',    'PA', '17601', 40.04920, -76.38370, NULL, 'grocery'),
+  -- Lancaster (verified May 2026 — 325 Centerville Weis and 45 W Chestnut CVS were fabricated)
+  ('Weis Markets',                '1400 Stony Battery Rd', 'Lancaster',    'PA', '17601', 40.07050, -76.39870, '(717) 285-9000', 'grocery'),
   ('Sheetz',                      '3101 Columbia Ave',     'Lancaster',    'PA', '17603', 40.03680, -76.33170, NULL, 'convenience'),
-  ('CVS Pharmacy',                '45 W Chestnut St',      'Lancaster',    'PA', '17603', 40.03746, -76.30856, NULL, 'drugstore')
+  ('CVS Pharmacy',                '32 W Lemon St',         'Lancaster',    'PA', '17603', 40.04460, -76.30622, '(717) 393-0623', 'drugstore')
 
 ON CONFLICT DO NOTHING;
 
