@@ -1,7 +1,94 @@
-import { supabase } from './supabase'
+import { createClient } from '@supabase/supabase-js'
 import { Store, SearchFilters, StoreProduct, FavoriteStore } from '../types'
 
-// Fetch all stores with optional filters
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error(
+    'Missing Supabase environment variables. Please check your .env.local file.'
+  )
+}
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+  },
+})
+
+// Auth helpers
+export const signUpWithEmail = async (email: string, password: string, fullName?: string) => {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        full_name: fullName,
+      },
+    },
+  })
+  return { data, error }
+}
+
+export const signInWithEmail = async (email: string, password: string) => {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  })
+  return { data, error }
+}
+
+export const signInWithGoogle = async () => {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${window.location.origin}/`,
+    },
+  })
+  return { data, error }
+}
+
+export const signInWithApple = async () => {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'apple',
+    options: {
+      redirectTo: `${window.location.origin}/`,
+    },
+  })
+  return { data, error }
+}
+
+export const signOut = async () => {
+  const { error } = await supabase.auth.signOut()
+  return { error }
+}
+
+export const resetPassword = async (email: string) => {
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${window.location.origin}/reset-password`,
+  })
+  return { data, error }
+}
+
+export const updatePassword = async (newPassword: string) => {
+  const { data, error } = await supabase.auth.updateUser({
+    password: newPassword,
+  })
+  return { data, error }
+}
+
+export const getCurrentUser = async () => {
+  const { data, error } = await supabase.auth.getUser()
+  return { data, error }
+}
+
+export const getSession = async () => {
+  const { data, error } = await supabase.auth.getSession()
+  return { data, error }
+}
+
+// Store data
 export const getStores = async (filters?: SearchFilters) => {
   try {
     let query = supabase
@@ -25,7 +112,6 @@ export const getStores = async (filters?: SearchFilters) => {
   }
 }
 
-// Fetch single store by ID
 export const getStoreById = async (storeId: string) => {
   try {
     const { data, error } = await supabase
@@ -42,7 +128,6 @@ export const getStoreById = async (storeId: string) => {
   }
 }
 
-// Search stores by address/city/zip
 export const searchStoresByLocation = async (query: string) => {
   try {
     const { data, error } = await supabase
@@ -61,8 +146,27 @@ export const searchStoresByLocation = async (query: string) => {
   }
 }
 
-// Get stores within radius of coordinates
-// Note: This requires PostGIS function setup in Supabase
+export const calculateDistance = (
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number => {
+  const R = 6371
+  const dLat = toRad(lat2 - lat1)
+  const dLon = toRad(lon2 - lon1)
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) *
+      Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2)
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  return R * c
+}
+
+const toRad = (degrees: number) => (degrees * Math.PI) / 180
+
 export const getStoresNearby = async (
   latitude: number,
   longitude: number,
@@ -79,7 +183,6 @@ export const getStoresNearby = async (
     if (error) throw error
     return { data: (data as Store[]) || [], error: null }
   } catch (error) {
-    // Fallback if RPC not available - fetch all and filter in frontend
     console.warn('PostGIS nearby_stores RPC not available, falling back to client-side filtering')
     const { data: allStores } = await getStores()
 
@@ -97,29 +200,6 @@ export const getStoresNearby = async (
   }
 }
 
-// Calculate distance between two coordinates (Haversine formula)
-export const calculateDistance = (
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number
-): number => {
-  const R = 6371 // Earth's radius in kilometers
-  const dLat = toRad(lat2 - lat1)
-  const dLon = toRad(lon2 - lon1)
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRad(lat1)) *
-      Math.cos(toRad(lat2)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2)
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-  return R * c
-}
-
-const toRad = (degrees: number) => (degrees * Math.PI) / 180
-
-// Get favorite stores for current user
 export const getFavoriteStores = async (userId: string) => {
   try {
     const { data, error } = await supabase
@@ -135,7 +215,6 @@ export const getFavoriteStores = async (userId: string) => {
   }
 }
 
-// Add store to favorites
 export const addToFavorites = async (userId: string, storeId: string) => {
   try {
     const { data, error } = await supabase
@@ -151,7 +230,6 @@ export const addToFavorites = async (userId: string, storeId: string) => {
   }
 }
 
-// Remove store from favorites
 export const removeFromFavorites = async (userId: string, storeId: string) => {
   try {
     const { error } = await supabase
@@ -168,7 +246,6 @@ export const removeFromFavorites = async (userId: string, storeId: string) => {
   }
 }
 
-// Check if store is favorited
 export const isFavorited = async (userId: string, storeId: string) => {
   try {
     const { data, error } = await supabase
@@ -188,7 +265,6 @@ export const isFavorited = async (userId: string, storeId: string) => {
   }
 }
 
-// Get store hours for a specific day
 export const getStoreHours = async (storeId: string) => {
   try {
     const { data, error } = await supabase
@@ -205,14 +281,13 @@ export const getStoreHours = async (storeId: string) => {
   }
 }
 
-// Check if store is open now
 export const isStoreOpenNow = async (storeId: string): Promise<boolean> => {
   try {
     const { data: hours } = await getStoreHours(storeId)
 
     const now = new Date()
-    const dayOfWeek = now.getDay() // 0 = Sunday
-    const currentTime = now.toTimeString().slice(0, 5) // HH:MM
+    const dayOfWeek = now.getDay()
+    const currentTime = now.toTimeString().slice(0, 5)
 
     const todayHours = hours.find(h => h.day_of_week === dayOfWeek)
 
@@ -227,7 +302,6 @@ export const isStoreOpenNow = async (storeId: string): Promise<boolean> => {
   }
 }
 
-// Get products available at a store
 export const getStoreProducts = async (storeId: string) => {
   try {
     const { data, error } = await supabase

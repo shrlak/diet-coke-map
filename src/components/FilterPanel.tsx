@@ -1,4 +1,4 @@
-import { useFilterStore } from '../store/filterStore'
+import { useFilterStore } from '../store/uiStore'
 
 const RADIUS_OPTIONS = [
   { km: 5, label: '3 mi' },

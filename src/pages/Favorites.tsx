@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import StoreCard from '../components/StoreCard'
 import StoreDetailsModal from '../components/StoreDetailsModal'
 import { useAuthStore } from '../store/authStore'
-import { getFavoriteStores, removeFromFavorites } from '../services/storeService'
+import { getFavoriteStores, removeFromFavorites } from '../services/api'
 import type { Store } from '../types'
 
 export default function Favorites() {

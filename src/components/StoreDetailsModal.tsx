@@ -6,7 +6,7 @@ import {
   addToFavorites,
   removeFromFavorites,
   isFavorited as checkFavorited,
-} from '../services/storeService'
+} from '../services/api'
 
 const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
