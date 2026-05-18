@@ -271,6 +271,22 @@ INSERT INTO stores (name, address, city, state, zip, latitude, longitude, phone,
   -- sunoco.com station #0859331103; yelp.com/biz/sunoco-pittsburgh-8 (Dec 2025)
   -- Widely cited as the only full-service gas station in Oakland proper
   ('Sunoco', '301 Craft Ave', 'Pittsburgh', 'PA', '15213', 40.44080, -79.95660, NULL, 'gas_station'),
+  -- CVS storeid=2348, across from UPMC Presbyterian (active)
+  ('CVS Pharmacy (Oakland / Forbes)', '3422 Forbes Ave', 'Pittsburgh', 'PA', '15213', 40.43876, -79.96023, '(412) 621-3060', 'drugstore'),
+  -- Pitt-owned grocery in Bruce Hall next to William Pitt Union (utimes.pitt.edu)
+  ('Forbes Street Market', '3955 Forbes Ave', 'Pittsburgh', 'PA', '15213', 40.44320, -79.95320, '(412) 648-4422', 'grocery'),
+  -- Italian grocery & deli in South Oakland (groceriamerante.com)
+  ('Groceria Merante', '3454 Bates St', 'Pittsburgh', 'PA', '15213', 40.43654, -79.95533, '(412) 683-1810', 'grocery'),
+  -- Central Oakland student deli (yelp.com/biz/frenchis-deli-and-market-pittsburgh-2)
+  ('Frenchi''s Deli & Market', '449 Atwood St', 'Pittsburgh', 'PA', '15213', 40.43705, -79.95870, '(412) 687-1105', 'convenience'),
+  -- North Oakland deli on N Craig St (yelp.com/biz/food-for-thought-deli-pittsburgh)
+  ('Food For Thought Deli', '196 N Craig St', 'Pittsburgh', 'PA', '15213', 40.44830, -79.95040, '(412) 682-5033', 'convenience'),
+  -- South Oakland convenience at Blvd of the Allies / Ward St
+  ('One Stop Mini Mart', '3601 Blvd of the Allies', 'Pittsburgh', 'PA', '15213', 40.43700, -79.95770, '(412) 621-4539', 'convenience'),
+  -- Pitt's largest independent bookstore (pittuniversitystore.com)
+  ('The University Store on Fifth', '4000 Fifth Ave', 'Pittsburgh', 'PA', '15213', 40.44430, -79.95510, '(412) 648-1455', 'convenience'),
+  -- Pitt athletic store on Forbes Ave (thepittshop.com)
+  ('The Pitt Shop', '3939 Forbes Ave', 'Pittsburgh', 'PA', '15213', 40.44260, -79.95430, '(412) 648-7090', 'convenience'),
 
   -- Philadelphia (verified May 2026 — 1900 Market Wawa was permanently closed; 1524 Chestnut, 4000 City Ave never had the listed chain)
   ('Wawa',                        '1700 Sansom St',        'Philadelphia', 'PA', '19103', 39.95085, -75.16908, '(215) 564-4501', 'convenience'),
