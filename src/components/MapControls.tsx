@@ -1,4 +1,4 @@
-import type { MapLayer } from '../store/mapStore'
+import type { MapLayer } from '../store/uiStore'
 
 interface MapControlsProps {
   mapLayer: MapLayer

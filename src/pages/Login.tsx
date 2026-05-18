@@ -9,7 +9,7 @@ import {
   signInWithGoogle,
   signInWithApple,
   resetPassword,
-} from '../services/supabase'
+} from '../services/api'
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email'),

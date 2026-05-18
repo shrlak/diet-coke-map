@@ -5,8 +5,7 @@ import StoreCard from '../components/StoreCard'
 import FilterPanel from '../components/FilterPanel'
 import StoreDetailsModal from '../components/StoreDetailsModal'
 import { useAuthStore } from '../store/authStore'
-import { useFilterStore } from '../store/filterStore'
-import { useMapStore } from '../store/mapStore'
+import { useFilterStore, useMapStore } from '../store/uiStore'
 import { useGeoLocation } from '../hooks/useGeoLocation'
 import {
   getStores,
@@ -16,7 +15,7 @@ import {
   addToFavorites,
   removeFromFavorites,
   getFavoriteStores,
-} from '../services/storeService'
+} from '../services/api'
 import type { Store, UserLocation } from '../types'
 
 const Map = lazy(() => import('../components/Map'))

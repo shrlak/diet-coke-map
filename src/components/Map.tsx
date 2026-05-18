@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from 'react-le
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import type { Store, UserLocation } from '../types'
-import type { MapLayer } from '../store/mapStore'
+import type { MapLayer } from '../store/uiStore'
 import MapControls from './MapControls'
 
 delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl
