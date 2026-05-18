@@ -172,14 +172,14 @@ INSERT INTO stores (name, address, city, state, zip, latitude, longitude, phone,
   ('GetGo (South Side / E Carson St)', '3247 E Carson St', 'Pittsburgh', 'PA', '15203', 40.42710, -79.96660, '(412) 431-8460', 'convenience'),
 
   -- Sheetz (9 locations)
-  ('Sheetz (Aspinwall / Freeport Rd)', '2871 Freeport Rd', 'Pittsburgh', 'PA', '15238', 40.48620, -79.90240, '(412) 635-1003', 'convenience'),
-  ('Sheetz (North Hills / Perry Hwy)', '8500 Perry Hwy', 'Pittsburgh', 'PA', '15237', 40.56840, -80.03350, '(412) 635-1002', 'convenience'),
-  ('Sheetz (Ohio Township / Mt Nebo)', '211 Mount Nebo Rd', 'Pittsburgh', 'PA', '15237', 40.50930, -80.11180, '(412) 635-1001', 'convenience'),
+  ('Sheetz (Aspinwall / Freeport Rd)', '2871 Freeport Rd', 'Pittsburgh', 'PA', '15238', 40.48620, -79.90240, '(412) 530-0283', 'convenience'),
+  ('Sheetz (North Hills / Perry Hwy)', '8500 Perry Hwy', 'Pittsburgh', 'PA', '15237', 40.56840, -80.03350, '(412) 536-3905', 'convenience'),
+  ('Sheetz (Ohio Township / Mt Nebo)', '211 Mount Nebo Rd', 'Pittsburgh', 'PA', '15237', 40.50930, -80.11180, '(412) 351-9346', 'convenience'),
   ('Sheetz (Penn Hills / William Penn Hwy)', '3457 William Penn Hwy', 'Pittsburgh', 'PA', '15235', 40.44370, -79.79480, '(412) 388-9553', 'convenience'),
-  ('Sheetz (Pleasant Hills / Clairton Blvd)', '1000 Clairton Blvd', 'Pittsburgh', 'PA', '15236', 40.35900, -79.98550, '(412) 284-0135', 'convenience'),
-  ('Sheetz (Plum)', '950 Presque Isle Dr', 'Plum', 'PA', '15239', 40.49750, -79.76850, '(412) 635-1004', 'convenience'),
-  ('Sheetz (Robinson / Campbells Run)', '5410 Campbells Run Rd', 'Pittsburgh', 'PA', '15205', 40.44778, -80.15735, '(412) 356-8371', 'convenience'),
-  ('Sheetz (Ross Township / Babcock)', '3025 Babcock Blvd', 'Pittsburgh', 'PA', '15237', 40.51720, -80.02080, '(412) 635-1000', 'convenience'),
+  ('Sheetz (Pleasant Hills / Clairton Blvd)', '1000 Clairton Blvd', 'Pittsburgh', 'PA', '15236', 40.32036, -79.94189, '(412) 284-0135', 'convenience'),
+  ('Sheetz (Plum)', '950 Presque Isle Dr', 'Pittsburgh', 'PA', '15239', 40.49750, -79.76850, '(724) 519-8894', 'convenience'),
+  ('Sheetz (Robinson / Campbells Run)', '5410 Campbells Run Rd', 'Pittsburgh', 'PA', '15205', 40.44574, -80.15871, '(412) 356-8371', 'convenience'),
+  ('Sheetz (Ross Township / Babcock)', '3025 Babcock Blvd', 'Pittsburgh', 'PA', '15237', 40.51720, -80.02080, '(412) 931-1716', 'convenience'),
   ('Sheetz (Stowe / Grand Ave)', '5800 Grand Ave', 'Pittsburgh', 'PA', '15225', 40.48860, -80.07110, '(412) 375-2104', 'convenience'),
 
   -- CVS Pharmacy (9 locations — CVS at 3422 Forbes Ave Oakland removed: confirmed CLOSED per Yelp Apr 2026)
@@ -204,13 +204,13 @@ INSERT INTO stores (name, address, city, state, zip, latitude, longitude, phone,
   ('Walgreens (Wilkinsburg / Penn Ave)', '7628 Penn Ave', 'Pittsburgh', 'PA', '15221', 40.44880, -79.85350, '(412) 244-5430', 'drugstore'),
 
   -- Aldi (7 locations)
-  ('Aldi (Bloomfield / Baum Blvd)', '5631 Baum Blvd', 'Pittsburgh', 'PA', '15206', 40.45430, -79.92340, '(412) 682-0170', 'grocery'),
-  ('Aldi (Bloomfield / Penn Ave)', '5200 Penn Ave', 'Pittsburgh', 'PA', '15224', 40.46370, -79.93480, '(412) 661-0170', 'grocery'),
-  ('Aldi (Lawrenceville / 56th St)', '450 56th St', 'Pittsburgh', 'PA', '15201', 40.47420, -79.95740, '(412) 363-0170', 'grocery'),
-  ('Aldi (Overbrook / Sussex Ave)', '3089 Sussex Ave', 'Pittsburgh', 'PA', '15226', 40.38730, -80.00650, '(412) 531-0170', 'grocery'),
-  ('Aldi (Ross Township / McKnight)', '7221 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.54300, -80.02000, '(412) 563-0170', 'grocery'),
-  ('Aldi (Ross Township / Northway)', '6290 Northway Dr', 'Pittsburgh', 'PA', '15237', 40.51930, -80.01350, '(412) 369-0170', 'grocery'),
-  ('Aldi (South Side / E Carson)', '2628 E Carson St', 'Pittsburgh', 'PA', '15203', 40.42700, -79.97410, '(412) 431-0170', 'grocery'),
+  ('Aldi (Bloomfield / Baum Blvd)', '5631 Baum Blvd', 'Pittsburgh', 'PA', '15206', 40.45430, -79.92340, NULL, 'grocery'),
+  ('Aldi (Bloomfield / Penn Ave)', '5200 Penn Ave', 'Pittsburgh', 'PA', '15224', 40.46370, -79.93480, NULL, 'grocery'),
+  ('Aldi (Lawrenceville / 56th St)', '450 56th St', 'Pittsburgh', 'PA', '15201', 40.47420, -79.95740, NULL, 'grocery'),
+  ('Aldi (Overbrook / Sussex Ave)', '3089 Sussex Ave', 'Pittsburgh', 'PA', '15226', 40.38730, -80.00650, NULL, 'grocery'),
+  ('Aldi (Ross Township / McKnight)', '7221 McKnight Rd', 'Pittsburgh', 'PA', '15237', 40.54300, -80.02000, NULL, 'grocery'),
+  ('Aldi (Ross Township / Northway)', '6290 Northway Dr', 'Pittsburgh', 'PA', '15237', 40.51930, -80.01350, NULL, 'grocery'),
+  ('Aldi (South Side / E Carson)', '2628 E Carson St', 'Pittsburgh', 'PA', '15203', 40.42700, -79.97410, NULL, 'grocery'),
 
   -- Giant Eagle / Market District (14 locations)
   ('Giant Eagle (Baldwin/Grove Rd)', '5260 Grove Rd', 'Pittsburgh', 'PA', '15236', 40.36000, -79.99500, '(412) 881-4601', 'grocery'),
@@ -244,9 +244,9 @@ INSERT INTO stores (name, address, city, state, zip, latitude, longitude, phone,
   ('Walmart (Moon Township)', '7500 University Blvd', 'Moon Township', 'PA', '15108', 40.51560, -80.22412, '(412) 893-0143', 'grocery'),
 
   -- Additional Aldi locations (verified stores.aldi.us May 2026)
-  ('Aldi (Banksville Rd)', '2515 Banksville Rd', 'Pittsburgh', 'PA', '15216', 40.40574, -80.03594, '(855) 955-2534', 'grocery'),
-  ('Aldi (Penn Hills / Saltsburg Rd)', '7350 Saltsburg Rd', 'Penn Hills', 'PA', '15235', 40.46410, -79.81830, '(855) 955-2534', 'grocery'),
-  ('Aldi (Wilkinsburg / Penn Ave)', '401 Penn Ave', 'Wilkinsburg', 'PA', '15221', 40.44050, -79.87320, '(855) 955-2534', 'grocery'),
+  ('Aldi (Banksville Rd)', '2515 Banksville Rd', 'Pittsburgh', 'PA', '15216', 40.40574, -80.03594, NULL, 'grocery'),
+  ('Aldi (Penn Hills / Saltsburg Rd)', '7350 Saltsburg Rd', 'Penn Hills', 'PA', '15235', 40.46410, -79.81830, NULL, 'grocery'),
+  ('Aldi (Wilkinsburg / Penn Ave)', '401 Penn Ave', 'Wilkinsburg', 'PA', '15221', 40.44050, -79.87320, NULL, 'grocery'),
 
   -- Additional Giant Eagle locations (verified gianteagle.com / Yelp May 2026)
   ('Giant Eagle (Frankstown Rd, Penn Hills)', '9001 Frankstown Rd', 'Pittsburgh', 'PA', '15235', 40.45890, -79.82900, '(412) 371-0858', 'grocery'),
