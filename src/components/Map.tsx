@@ -56,7 +56,7 @@ const TILE_CONFIGS: Record<MapLayer, { url: string; attribution: string; maxZoom
 }
 
 const TRAFFIC_URL = 'https://api.tomtom.com/traffic/map/4/tile/flow/relative0/{z}/{x}/{y}.png'
-const trafficKey = import.meta.env.VITE_TOMTOM_API_KEY as string | undefined
+const trafficKey = import.meta.env.VITE_TOMTOM_KEY as string | undefined
 
 function MapController({ center, zoom }: { center: [number, number]; zoom: number }) {
   const map = useMap()
