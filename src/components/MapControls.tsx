@@ -13,7 +13,7 @@ const LAYERS: { id: MapLayer; emoji: string; label: string }[] = [
   { id: 'satellite', emoji: '🛰', label: 'Sat' },
 ]
 
-const trafficEnabled = Boolean(import.meta.env.VITE_TOMTOM_API_KEY)
+const trafficEnabled = Boolean(import.meta.env.VITE_TOMTOM_KEY)
 
 export default function MapControls({
   mapLayer,
@@ -52,7 +52,7 @@ export default function MapControls({
         title={
           trafficEnabled
             ? showTraffic ? 'Turn off traffic' : 'Turn on traffic'
-            : 'Add VITE_TOMTOM_API_KEY to .env to enable live traffic'
+            : 'Add VITE_TOMTOM_KEY to .env to enable live traffic'
         }
         className={`flex flex-col items-center gap-0.5 py-1.5 rounded-lg border-2 text-xs transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
           showTraffic && trafficEnabled
