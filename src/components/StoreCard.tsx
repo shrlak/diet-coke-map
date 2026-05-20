@@ -35,6 +35,7 @@ const STORE_TYPE_LABELS: Record<string, string> = {
   grocery: 'Grocery',
   gas: 'Gas Station',
   drugstore: 'Drugstore',
+  fast_food: 'Fast Food',
   restaurant: 'Restaurant',
   other: 'Other',
 }

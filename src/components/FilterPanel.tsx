@@ -37,6 +37,7 @@ const STORE_TYPE_OPTIONS = [
   { id: 'grocery', label: 'Grocery' },
   { id: 'gas', label: 'Gas Station' },
   { id: 'drugstore', label: 'Drugstore' },
+  { id: 'fast_food', label: 'Fast Food' },
 ]
 
 interface FilterPanelProps {
