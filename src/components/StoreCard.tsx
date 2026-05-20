@@ -1,5 +1,6 @@
 import { Heart, Clock, ChevronRight } from 'lucide-react'
 import type { Store, StoreHours } from '../types'
+import StarRating from './StarRating'
 
 function getOpenStatus(hours: StoreHours[] | undefined): { isOpen: boolean; label: string } {
   if (!hours || hours.length === 0) return { isOpen: false, label: 'Hours unavailable' }
@@ -46,6 +47,8 @@ interface StoreCardProps {
   isSelected?: boolean
   isFavorited?: boolean
   compact?: boolean
+  avgRating?: number
+  reviewCount?: number
   onSelect: (storeId: string) => void
   onFavorite?: (storeId: string) => void
 }
@@ -56,6 +59,8 @@ export default function StoreCard({
   isSelected,
   isFavorited,
   compact,
+  avgRating,
+  reviewCount,
   onSelect,
   onFavorite,
 }: StoreCardProps) {
@@ -138,6 +143,15 @@ export default function StoreCard({
           </span>
         )}
       </div>
+
+      {avgRating !== undefined && avgRating > 0 && (
+        <div className="mt-2 flex items-center gap-1.5">
+          <StarRating value={Math.round(avgRating)} size={12} />
+          <span className="text-xs text-gray-400">
+            {avgRating.toFixed(1)}{reviewCount !== undefined && reviewCount > 0 && ` (${reviewCount})`}
+          </span>
+        </div>
+      )}
 
       {store.store_products && store.store_products.filter((sp) => sp.in_stock).length > 0 && (
         <div className="mt-2.5 flex gap-1.5 flex-wrap">

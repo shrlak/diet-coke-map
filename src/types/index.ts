@@ -92,3 +92,57 @@ export interface ApiResponse<T> {
   error?: string
   status: number
 }
+
+// Stock confirmation (crowdsourced)
+export interface StockConfirmation {
+  id: string
+  store_product_id: string
+  user_id: string | null
+  is_confirmed: boolean
+  created_at: string
+}
+
+export interface StockConfirmationSummary {
+  confirmed: number
+  denied: number
+  lastConfirmedAt: string | null
+}
+
+// Stock alerts
+export interface StockAlert {
+  id: string
+  user_id: string
+  store_id: string
+  product_id: string
+  created_at: string
+}
+
+// Store reviews
+export interface StoreReview {
+  id: string
+  user_id: string
+  store_id: string
+  rating: number
+  body?: string
+  created_at: string
+  updated_at: string
+  reviewer_name?: string
+}
+
+// Store submissions
+export interface StoreSubmission {
+  submitter_email?: string
+  name: string
+  address: string
+  city: string
+  state: string
+  zip?: string
+  store_type?: string
+  notes?: string
+}
+
+// Route planner
+export interface RouteStop {
+  store: Store
+  addedAt: number
+}
