@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
-import { supabase, getFavoriteStores, getStoreReviews, getStockAlerts } from '../services/api'
+import { supabase, getFavoriteStores, getStockAlerts } from '../services/api'
 
 export default function Profile() {
   const { user, isAuthenticated, logout } = useAuthStore()
