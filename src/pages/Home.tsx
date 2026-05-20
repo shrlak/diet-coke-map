@@ -1,11 +1,14 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
-import { SlidersHorizontal, MapIcon, List, X } from 'lucide-react'
+import { SlidersHorizontal, MapIcon, List, X, Route } from 'lucide-react'
 import SearchBar from '../components/SearchBar'
 import StoreCard from '../components/StoreCard'
 import FilterPanel from '../components/FilterPanel'
 import StoreDetailsModal from '../components/StoreDetailsModal'
+import RoutePanel from '../components/RoutePanel'
 import { useAuthStore } from '../store/authStore'
 import { useFilterStore, useMapStore } from '../store/uiStore'
+import { useRecentlyViewedStore } from '../store/recentlyViewedStore'
+import { useRoutePlannerStore } from '../store/routePlannerStore'
 import { useGeoLocation } from '../hooks/useGeoLocation'
 import {
   getStores,
@@ -59,6 +62,9 @@ export default function Home() {
     useFilterStore()
   const { center, zoom, selectedStoreId, mapLayer, showTraffic, setCenter, setZoom, setSelectedStoreId, setMapLayer, setShowTraffic } =
     useMapStore()
+  const { stores: recentStores, addStore: addRecentStore } = useRecentlyViewedStore()
+  const { isActive: isRoutePlanning, stops: routeStops, toggleActive: toggleRoutePlanning, addStop, removeStop } =
+    useRoutePlannerStore()
 
   const { location: geoLocation, loading: geoLoading, requestLocation } = useGeoLocation()
 
@@ -70,6 +76,7 @@ export default function Home() {
   const [userLocation, setUserLocation] = useState<UserLocation | null>(null)
   const [favoritedIds, setFavoritedIds] = useState<Set<string>>(new Set())
   const [selectedStore, setSelectedStore] = useState<Store | null>(null)
+  const [showHeatmap, setShowHeatmap] = useState(false)
   const geoLoadedRef = useRef(false)
 
   // Load all stores on mount
@@ -146,9 +153,18 @@ export default function Home() {
 
   const handleStoreSelect = (storeId: string) => {
     const store = stores.find((s) => s.id === storeId)
-    setFilterOpen(false) // mutual exclusion
+    if (!store) return
+
+    // Route planning mode: add to route instead of opening details
+    if (isRoutePlanning) {
+      addStop(store)
+      return
+    }
+
+    setFilterOpen(false)
     setSelectedStoreId(storeId)
-    setSelectedStore(store || null)
+    setSelectedStore(store)
+    addRecentStore(store)
     if (store) {
       setCenter([store.latitude, store.longitude])
       setZoom(15)
@@ -157,7 +173,7 @@ export default function Home() {
   }
 
   const handleOpenFilter = () => {
-    setSelectedStore(null)   // mutual exclusion
+    setSelectedStore(null)
     setSelectedStoreId(null)
     setFilterOpen(true)
   }
@@ -210,6 +226,11 @@ export default function Home() {
     Boolean(filters.storeType) ||
     radiusKm !== 25
 
+  const routeStopIds = new Set(routeStops.map((s) => s.id))
+
+  // Recently viewed stores that are in the current store list
+  const recentInList = recentStores.filter((rs) => stores.some((s) => s.id === rs.id))
+
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden">
       {/* Red search strip */}
@@ -225,7 +246,6 @@ export default function Home() {
 
       {/* Chip bar */}
       <div className="bg-white border-b border-gray-100 px-3 py-2 flex items-center gap-2 overflow-x-auto flex-shrink-0 min-h-[44px]">
-        {/* Filters button */}
         <button
           onClick={handleOpenFilter}
           className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-medium flex-shrink-0 transition-colors ${
@@ -239,6 +259,24 @@ export default function Home() {
           {hasActiveFilters && (
             <span className="bg-[#E8192C] text-white text-[9px] rounded-full w-3.5 h-3.5 flex items-center justify-center">
               {activeProductIds.length + (filters.storeType ? 1 : 0) + (radiusKm !== 25 ? 1 : 0)}
+            </span>
+          )}
+        </button>
+
+        {/* Route planner toggle */}
+        <button
+          onClick={toggleRoutePlanning}
+          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-medium flex-shrink-0 transition-colors ${
+            isRoutePlanning
+              ? 'border-purple-600 bg-purple-50 text-purple-700'
+              : 'border-gray-200 text-gray-600 hover:border-gray-300'
+          }`}
+        >
+          <Route size={12} />
+          Plan Route
+          {routeStops.length > 0 && (
+            <span className="bg-purple-600 text-white text-[9px] rounded-full w-3.5 h-3.5 flex items-center justify-center">
+              {routeStops.length}
             </span>
           )}
         </button>
@@ -300,7 +338,6 @@ export default function Home() {
         {/* MAP VIEW */}
         {viewMode === 'map' && (
           <>
-            {/* Map fills remaining space */}
             <div className="flex-1 relative overflow-hidden">
               <Suspense fallback={<div className="flex-1 flex items-center justify-center bg-gray-100 h-full">Loading map…</div>}>
                 <Map
@@ -311,15 +348,18 @@ export default function Home() {
                   zoom={zoom}
                   mapLayer={mapLayer}
                   showTraffic={showTraffic}
+                  showHeatmap={showHeatmap}
+                  routeStopIds={routeStopIds}
+                  isRoutePlanningMode={isRoutePlanning}
                   onStoreSelect={handleStoreSelect}
                   onMapLayerChange={setMapLayer}
                   onTrafficToggle={() => setShowTraffic(!showTraffic)}
+                  onHeatmapToggle={() => setShowHeatmap((v) => !v)}
                   onGeolocate={handleGeolocate}
                   geoLoading={geoLoading}
                 />
               </Suspense>
 
-              {/* Store count badge (top-left over map) */}
               {!loading && (
                 <div className="absolute top-3 left-3 z-[1000] bg-white/90 backdrop-blur-sm border border-gray-100 rounded-lg px-2.5 py-1 text-xs font-medium text-gray-700 shadow-sm">
                   {sortedStores.length} stores
@@ -343,7 +383,7 @@ export default function Home() {
                     key={store.id}
                     store={store}
                     distance={getDistance(store)}
-                    isSelected={selectedStoreId === store.id}
+                    isSelected={isRoutePlanning ? routeStopIds.has(store.id) : selectedStoreId === store.id}
                     isFavorited={favoritedIds.has(store.id)}
                     onSelect={handleStoreSelect}
                     onFavorite={isAuthenticated ? handleFavorite : undefined}
@@ -369,18 +409,43 @@ export default function Home() {
                 <p className="text-sm">Try a different search or adjust filters</p>
               </div>
             ) : (
-              <div className="p-4 space-y-2 max-w-2xl mx-auto">
-                {sortedStores.map((store) => (
-                  <StoreCard
-                    key={store.id}
-                    store={store}
-                    distance={getDistance(store)}
-                    isSelected={selectedStoreId === store.id}
-                    isFavorited={favoritedIds.has(store.id)}
-                    onSelect={handleStoreSelect}
-                    onFavorite={isAuthenticated ? handleFavorite : undefined}
-                  />
-                ))}
+              <div className="p-4 space-y-4 max-w-2xl mx-auto">
+                {/* Recently viewed section */}
+                {recentInList.length > 0 && !searchQuery && (
+                  <div>
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                      Recently Viewed
+                    </p>
+                    <div className="flex gap-2 overflow-x-auto pb-1">
+                      {recentInList.map((store) => (
+                        <button
+                          key={store.id}
+                          onClick={() => handleStoreSelect(store.id)}
+                          className="flex-shrink-0 bg-white border border-gray-100 rounded-xl px-3 py-2.5 text-left hover:border-[#E8192C]/30 hover:shadow-sm transition-all min-w-[140px] max-w-[180px]"
+                        >
+                          <p className="text-xs font-semibold text-[#1A1A1A] truncate">{store.name}</p>
+                          <p className="text-[10px] text-gray-400 truncate mt-0.5">{store.address}</p>
+                        </button>
+                      ))}
+                    </div>
+                    <div className="h-px bg-gray-100 mt-3" />
+                  </div>
+                )}
+
+                {/* Full store list */}
+                <div className="space-y-2">
+                  {sortedStores.map((store) => (
+                    <StoreCard
+                      key={store.id}
+                      store={store}
+                      distance={getDistance(store)}
+                      isSelected={isRoutePlanning ? routeStopIds.has(store.id) : selectedStoreId === store.id}
+                      isFavorited={favoritedIds.has(store.id)}
+                      onSelect={handleStoreSelect}
+                      onFavorite={isAuthenticated ? handleFavorite : undefined}
+                    />
+                  ))}
+                </div>
               </div>
             )}
           </div>
@@ -395,11 +460,22 @@ export default function Home() {
       />
 
       {/* Store details modal */}
-      {selectedStore && (
+      {selectedStore && !isRoutePlanning && (
         <StoreDetailsModal
           store={selectedStore}
           onClose={() => { setSelectedStore(null); setSelectedStoreId(null) }}
           distanceKm={getDistance(selectedStore)}
+        />
+      )}
+
+      {/* Route panel */}
+      {isRoutePlanning && (
+        <RoutePanel
+          stops={routeStops}
+          userLat={userLocation?.latitude}
+          userLon={userLocation?.longitude}
+          onRemoveStop={removeStop}
+          onClose={toggleRoutePlanning}
         />
       )}
     </div>

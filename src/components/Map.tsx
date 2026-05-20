@@ -29,6 +29,14 @@ const selectedStoreIcon = L.divIcon({
   popupAnchor: [0, -36],
 })
 
+const routeStopIcon = L.divIcon({
+  className: '',
+  html: `<div style="width:30px;height:30px;background:#7C3AED;border:3px solid white;border-radius:50%;box-shadow:0 0 0 3px rgba(124,58,237,0.3),2px 2px 6px rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;"></div>`,
+  iconSize: [30, 30],
+  iconAnchor: [15, 15],
+  popupAnchor: [0, -18],
+})
+
 const userIcon = L.divIcon({
   className: '',
   html: `<div style="width:16px;height:16px;background:#2563eb;border:3px solid white;border-radius:50%;box-shadow:0 0 0 4px rgba(37,99,235,0.2);"></div>`,
@@ -58,6 +66,13 @@ const TILE_CONFIGS: Record<MapLayer, { url: string; attribution: string; maxZoom
 const TRAFFIC_URL = 'https://api.tomtom.com/traffic/map/4/tile/flow/relative0/{z}/{x}/{y}.png'
 const trafficKey = import.meta.env.VITE_TOMTOM_KEY as string | undefined
 
+function heatmapColor(inStockCount: number): string {
+  if (inStockCount === 0) return 'rgba(156,163,175,0.25)'  // gray
+  if (inStockCount <= 2) return 'rgba(234,179,8,0.25)'     // yellow
+  if (inStockCount <= 5) return 'rgba(249,115,22,0.28)'    // orange
+  return 'rgba(232,25,44,0.3)'                              // red
+}
+
 function MapController({ center, zoom }: { center: [number, number]; zoom: number }) {
   const map = useMap()
   useEffect(() => {
@@ -74,9 +89,13 @@ interface MapProps {
   zoom: number
   mapLayer: MapLayer
   showTraffic: boolean
+  showHeatmap: boolean
+  routeStopIds?: Set<string>
+  isRoutePlanningMode?: boolean
   onStoreSelect: (storeId: string) => void
   onMapLayerChange: (layer: MapLayer) => void
   onTrafficToggle: () => void
+  onHeatmapToggle: () => void
   onGeolocate: () => void
   geoLoading?: boolean
 }
@@ -89,9 +108,13 @@ export default function Map({
   zoom,
   mapLayer,
   showTraffic,
+  showHeatmap,
+  routeStopIds,
+  isRoutePlanningMode,
   onStoreSelect,
   onMapLayerChange,
   onTrafficToggle,
+  onHeatmapToggle,
   onGeolocate,
   geoLoading,
 }: MapProps) {
@@ -99,6 +122,12 @@ export default function Map({
 
   return (
     <div className="relative h-full w-full">
+      {isRoutePlanningMode && (
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[1000] bg-purple-700 text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg pointer-events-none">
+          Route planning — tap stores to add stops
+        </div>
+      )}
+
       <MapContainer
         center={center}
         zoom={zoom}
@@ -106,7 +135,7 @@ export default function Map({
         scrollWheelZoom={true}
         zoomControl={false}
       >
-        {/* Base tile layer — key forces remount on layer change */}
+        {/* Base tile layer */}
         <TileLayer
           key={mapLayer}
           url={tileConfig.url}
@@ -125,7 +154,26 @@ export default function Map({
 
         <MapController center={center} zoom={zoom} />
 
-        {/* User location marker + accuracy circle */}
+        {/* Heatmap circles — rendered below markers */}
+        {showHeatmap &&
+          stores.map((store) => {
+            const inStockCount = store.store_products?.filter((sp) => sp.in_stock).length ?? 0
+            return (
+              <Circle
+                key={`heat-${store.id}`}
+                center={[store.latitude, store.longitude]}
+                radius={600}
+                pathOptions={{
+                  fillColor: heatmapColor(inStockCount),
+                  fillOpacity: 1,
+                  color: 'transparent',
+                  weight: 0,
+                }}
+              />
+            )
+          })}
+
+        {/* User location */}
         {userLocation && (
           <>
             {userLocation.accuracy && (
@@ -155,28 +203,38 @@ export default function Map({
           </>
         )}
 
-        {/* Store markers — clicking opens StoreDetailsModal directly */}
-        {stores.map((store) => (
-          <Marker
-            key={store.id}
-            position={[store.latitude, store.longitude]}
-            icon={store.id === selectedStoreId ? selectedStoreIcon : storeIcon}
-            eventHandlers={{ click: () => onStoreSelect(store.id) }}
-          />
-        ))}
+        {/* Store markers */}
+        {stores.map((store) => {
+          const isRouteStop = routeStopIds?.has(store.id)
+          const icon = isRouteStop
+            ? routeStopIcon
+            : store.id === selectedStoreId
+            ? selectedStoreIcon
+            : storeIcon
+          return (
+            <Marker
+              key={store.id}
+              position={[store.latitude, store.longitude]}
+              icon={icon}
+              eventHandlers={{ click: () => onStoreSelect(store.id) }}
+            />
+          )
+        })}
       </MapContainer>
 
-      {/* Floating layer + traffic controls (top-right) */}
+      {/* Floating controls (top-right) */}
       <div className="absolute top-3 right-3 z-[1000]">
         <MapControls
           mapLayer={mapLayer}
           onMapLayerChange={onMapLayerChange}
           showTraffic={showTraffic}
           onTrafficToggle={onTrafficToggle}
+          showHeatmap={showHeatmap}
+          onHeatmapToggle={onHeatmapToggle}
         />
       </div>
 
-      {/* Locate me button (bottom-right) */}
+      {/* Locate me button */}
       <button
         onClick={onGeolocate}
         disabled={geoLoading}

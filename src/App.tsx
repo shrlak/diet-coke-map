@@ -7,6 +7,7 @@ import Login from './pages/Login'
 import Favorites from './pages/Favorites'
 import Profile from './pages/Profile'
 import About from './pages/About'
+import StorePage from './pages/StorePage'
 
 const NotFound = () => (
   <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
@@ -48,6 +49,7 @@ function App() {
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/about" element={<About />} />
+            <Route path="/store/:id" element={<StorePage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

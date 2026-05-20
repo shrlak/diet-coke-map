@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import { Store, SearchFilters, StoreProduct, FavoriteStore } from '../types'
+import { Store, SearchFilters, StoreProduct, FavoriteStore, StoreReview, StoreSubmission, StockConfirmationSummary } from '../types'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
@@ -315,5 +315,175 @@ export const getStoreProducts = async (storeId: string) => {
   } catch (error) {
     console.error('Error fetching store products:', error)
     return { data: [], error }
+  }
+}
+
+// ── Stock confirmations ──────────────────────────────────────────────────────
+
+export const getStockConfirmationSummary = async (
+  storeProductId: string
+): Promise<StockConfirmationSummary> => {
+  const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+  const { data } = await supabase
+    .from('stock_confirmations')
+    .select('is_confirmed, created_at')
+    .eq('store_product_id', storeProductId)
+    .gte('created_at', since)
+
+  if (!data) return { confirmed: 0, denied: 0, lastConfirmedAt: null }
+  const confirmed = data.filter((r) => r.is_confirmed).length
+  const denied = data.filter((r) => !r.is_confirmed).length
+  const confirmRows = data.filter((r) => r.is_confirmed)
+  const lastConfirmedAt =
+    confirmRows.length > 0
+      ? confirmRows.sort((a, b) => b.created_at.localeCompare(a.created_at))[0].created_at
+      : null
+  return { confirmed, denied, lastConfirmedAt }
+}
+
+export const addStockConfirmation = async (
+  storeProductId: string,
+  isConfirmed: boolean,
+  userId?: string
+) => {
+  try {
+    const { data, error } = await supabase
+      .from('stock_confirmations')
+      .insert({ store_product_id: storeProductId, is_confirmed: isConfirmed, user_id: userId ?? null })
+      .select()
+    if (error) throw error
+    return { data, error: null }
+  } catch (error) {
+    console.error('Error adding stock confirmation:', error)
+    return { data: null, error }
+  }
+}
+
+// ── Stock alerts ─────────────────────────────────────────────────────────────
+
+export const getStockAlerts = async (userId: string) => {
+  try {
+    const { data, error } = await supabase
+      .from('stock_alerts')
+      .select('*')
+      .eq('user_id', userId)
+    if (error) throw error
+    return { data: data || [], error: null }
+  } catch (error) {
+    console.error('Error fetching stock alerts:', error)
+    return { data: [], error }
+  }
+}
+
+export const addStockAlert = async (userId: string, storeId: string, productId: string) => {
+  try {
+    const { data, error } = await supabase
+      .from('stock_alerts')
+      .insert({ user_id: userId, store_id: storeId, product_id: productId })
+      .select()
+    if (error) throw error
+    return { data, error: null }
+  } catch (error) {
+    console.error('Error adding stock alert:', error)
+    return { data: null, error }
+  }
+}
+
+export const removeStockAlert = async (userId: string, storeId: string, productId: string) => {
+  try {
+    const { error } = await supabase
+      .from('stock_alerts')
+      .delete()
+      .eq('user_id', userId)
+      .eq('store_id', storeId)
+      .eq('product_id', productId)
+    if (error) throw error
+    return { error: null }
+  } catch (error) {
+    console.error('Error removing stock alert:', error)
+    return { error }
+  }
+}
+
+// ── Store reviews ─────────────────────────────────────────────────────────────
+
+export const getStoreReviews = async (storeId: string) => {
+  try {
+    const { data, error } = await supabase
+      .from('store_reviews')
+      .select('*')
+      .eq('store_id', storeId)
+      .order('created_at', { ascending: false })
+    if (error) throw error
+    return { data: (data as StoreReview[]) || [], error: null }
+  } catch (error) {
+    console.error('Error fetching store reviews:', error)
+    return { data: [], error }
+  }
+}
+
+export const getMyReview = async (userId: string, storeId: string) => {
+  try {
+    const { data, error } = await supabase
+      .from('store_reviews')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('store_id', storeId)
+      .single()
+    if (error?.code === 'PGRST116') return { data: null, error: null }
+    if (error) throw error
+    return { data: data as StoreReview, error: null }
+  } catch (error) {
+    console.error('Error fetching own review:', error)
+    return { data: null, error }
+  }
+}
+
+export const upsertStoreReview = async (
+  userId: string,
+  storeId: string,
+  rating: number,
+  body?: string
+) => {
+  try {
+    const { data, error } = await supabase
+      .from('store_reviews')
+      .upsert(
+        { user_id: userId, store_id: storeId, rating, body: body ?? null, updated_at: new Date().toISOString() },
+        { onConflict: 'user_id,store_id' }
+      )
+      .select()
+    if (error) throw error
+    return { data, error: null }
+  } catch (error) {
+    console.error('Error upserting review:', error)
+    return { data: null, error }
+  }
+}
+
+export const deleteStoreReview = async (reviewId: string) => {
+  try {
+    const { error } = await supabase.from('store_reviews').delete().eq('id', reviewId)
+    if (error) throw error
+    return { error: null }
+  } catch (error) {
+    console.error('Error deleting review:', error)
+    return { error }
+  }
+}
+
+// ── Store submissions ─────────────────────────────────────────────────────────
+
+export const submitStore = async (submission: StoreSubmission) => {
+  try {
+    const { data, error } = await supabase
+      .from('store_submissions')
+      .insert(submission)
+      .select()
+    if (error) throw error
+    return { data, error: null }
+  } catch (error) {
+    console.error('Error submitting store:', error)
+    return { data: null, error }
   }
 }

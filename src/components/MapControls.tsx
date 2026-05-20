@@ -5,6 +5,8 @@ interface MapControlsProps {
   onMapLayerChange: (layer: MapLayer) => void
   showTraffic: boolean
   onTrafficToggle: () => void
+  showHeatmap: boolean
+  onHeatmapToggle: () => void
 }
 
 const LAYERS: { id: MapLayer; emoji: string; label: string }[] = [
@@ -20,6 +22,8 @@ export default function MapControls({
   onMapLayerChange,
   showTraffic,
   onTrafficToggle,
+  showHeatmap,
+  onHeatmapToggle,
 }: MapControlsProps) {
   return (
     <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-1.5 flex flex-col gap-1 w-[52px]">
@@ -64,6 +68,24 @@ export default function MapControls({
         <span className="text-[8px] font-semibold">
           {showTraffic && trafficEnabled ? 'ON' : 'OFF'}
         </span>
+      </button>
+
+      {/* Divider */}
+      <div className="h-px bg-gray-100 mx-1" />
+
+      {/* Heatmap toggle */}
+      <p className="text-[8px] uppercase tracking-wider text-gray-400 text-center">Heat</p>
+      <button
+        onClick={onHeatmapToggle}
+        title={showHeatmap ? 'Hide availability heatmap' : 'Show availability heatmap'}
+        className={`flex flex-col items-center gap-0.5 py-1.5 rounded-lg border-2 text-xs transition-all ${
+          showHeatmap
+            ? 'border-[#E8192C] bg-red-50 text-[#E8192C]'
+            : 'border-gray-200 text-gray-400 hover:border-gray-300'
+        }`}
+      >
+        <span className="text-base leading-none">🌡️</span>
+        <span className="text-[8px] font-semibold">{showHeatmap ? 'ON' : 'OFF'}</span>
       </button>
     </div>
   )
