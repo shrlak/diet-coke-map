@@ -64,7 +64,8 @@ export default function FilterPanel({ isOpen, onClose, resultCount }: FilterPane
   const hasActiveFilters =
     activeProductIds.length > 0 ||
     Boolean(filters.storeType && filters.storeType !== '') ||
-    radiusKm !== 25
+    radiusKm !== 25 ||
+    Boolean(filters.isOpenNow)
 
   return (
     <>
@@ -99,6 +100,28 @@ export default function FilterPanel({ isOpen, onClose, resultCount }: FilterPane
         </div>
 
         <div className="px-5 py-4 space-y-5">
+          {/* Open Now toggle */}
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Open Now</p>
+              <p className="text-xs text-gray-400 mt-0.5">Only show stores currently open</p>
+            </div>
+            <button
+              onClick={() => setFilters({ isOpenNow: !filters.isOpenNow })}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                filters.isOpenNow ? 'bg-[#E8192C]' : 'bg-gray-200'
+              }`}
+              role="switch"
+              aria-checked={filters.isOpenNow}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                  filters.isOpenNow ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
+
           {/* Radius + Sort By — 2-column grid */}
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -126,26 +149,38 @@ export default function FilterPanel({ isOpen, onClose, resultCount }: FilterPane
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
                 Sort By
               </p>
-              <div className="flex gap-1.5">
+              <div className="flex flex-col gap-1.5">
+                <div className="flex gap-1.5">
+                  <button
+                    onClick={() => setSortBy('distance')}
+                    className={`flex-1 py-1.5 rounded-lg border text-xs font-medium transition-colors ${
+                      sortBy === 'distance'
+                        ? 'border-[#E8192C] bg-red-50 text-[#E8192C]'
+                        : 'border-gray-200 text-gray-500 hover:border-gray-300'
+                    }`}
+                  >
+                    📍 Near me
+                  </button>
+                  <button
+                    onClick={() => setSortBy('name')}
+                    className={`flex-1 py-1.5 rounded-lg border text-xs font-medium transition-colors ${
+                      sortBy === 'name'
+                        ? 'border-[#E8192C] bg-red-50 text-[#E8192C]'
+                        : 'border-gray-200 text-gray-500 hover:border-gray-300'
+                    }`}
+                  >
+                    A–Z Name
+                  </button>
+                </div>
                 <button
-                  onClick={() => setSortBy('distance')}
-                  className={`flex-1 py-1.5 rounded-lg border text-xs font-medium transition-colors ${
-                    sortBy === 'distance'
+                  onClick={() => setSortBy('rating')}
+                  className={`w-full py-1.5 rounded-lg border text-xs font-medium transition-colors ${
+                    sortBy === 'rating'
                       ? 'border-[#E8192C] bg-red-50 text-[#E8192C]'
                       : 'border-gray-200 text-gray-500 hover:border-gray-300'
                   }`}
                 >
-                  📍 Near me
-                </button>
-                <button
-                  onClick={() => setSortBy('name')}
-                  className={`flex-1 py-1.5 rounded-lg border text-xs font-medium transition-colors ${
-                    sortBy === 'name'
-                      ? 'border-[#E8192C] bg-red-50 text-[#E8192C]'
-                      : 'border-gray-200 text-gray-500 hover:border-gray-300'
-                  }`}
-                >
-                  A–Z Name
+                  ⭐ Top Rated
                 </button>
               </div>
             </div>

@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
-import { supabase } from '../services/api'
+import { supabase, getFavoriteStores, getStoreReviews, getStockAlerts } from '../services/api'
 
 export default function Profile() {
   const { user, isAuthenticated, logout } = useAuthStore()
@@ -9,6 +9,17 @@ export default function Profile() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [stats, setStats] = useState({ favorites: 0, alerts: 0 })
+
+  useEffect(() => {
+    if (!user) return
+    Promise.all([
+      getFavoriteStores(user.id),
+      getStockAlerts(user.id),
+    ]).then(([favs, alerts]) => {
+      setStats({ favorites: favs.data.length, alerts: alerts.data.length })
+    })
+  }, [user])
 
   if (!isAuthenticated) {
     return (
@@ -46,10 +57,7 @@ export default function Profile() {
   }
 
   const joinDate = user?.created_at
-    ? new Date(user.created_at).toLocaleDateString('en-US', {
-        month: 'long',
-        year: 'numeric',
-      })
+    ? new Date(user.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
     : null
 
   return (
@@ -59,7 +67,7 @@ export default function Profile() {
 
         {/* User Info */}
         <div className="bg-white border border-gray-200 rounded-xl p-6 mb-4">
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex items-center gap-4 mb-5">
             <div className="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center text-2xl font-bold text-red-700">
               {(user?.full_name || user?.email || 'U').charAt(0).toUpperCase()}
             </div>
@@ -72,32 +80,39 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Messages */}
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-              {error}
+          {/* Stats */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-gray-50 rounded-lg px-4 py-3 text-center">
+              <p className="text-2xl font-bold text-[#E8192C]">{stats.favorites}</p>
+              <p className="text-xs text-gray-500 mt-0.5">Favorite Stores</p>
             </div>
+            <div className="bg-gray-50 rounded-lg px-4 py-3 text-center">
+              <p className="text-2xl font-bold text-[#E8192C]">{stats.alerts}</p>
+              <p className="text-xs text-gray-500 mt-0.5">Active Alerts</p>
+            </div>
+          </div>
+
+          {error && (
+            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">{error}</div>
           )}
           {success && (
-            <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
-              {success}
-            </div>
+            <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">{success}</div>
           )}
         </div>
 
         {/* Quick Links */}
         <div className="bg-white border border-gray-200 rounded-xl divide-y divide-gray-100 mb-4">
-          <Link
-            to="/favorites"
-            className="flex items-center justify-between px-4 py-3.5 hover:bg-gray-50 transition-colors"
-          >
+          <Link to="/favorites" className="flex items-center justify-between px-4 py-3.5 hover:bg-gray-50 transition-colors">
             <span className="text-sm font-medium text-gray-800">❤️ My Favorite Stores</span>
             <span className="text-gray-400 text-sm">→</span>
           </Link>
-          <Link
-            to="/"
-            className="flex items-center justify-between px-4 py-3.5 hover:bg-gray-50 transition-colors"
-          >
+          <Link to="/alerts" className="flex items-center justify-between px-4 py-3.5 hover:bg-gray-50 transition-colors">
+            <span className="text-sm font-medium text-gray-800">🔔 My Stock Alerts</span>
+            {stats.alerts > 0 && (
+              <span className="text-xs bg-[#E8192C] text-white rounded-full px-2 py-0.5">{stats.alerts}</span>
+            )}
+          </Link>
+          <Link to="/" className="flex items-center justify-between px-4 py-3.5 hover:bg-gray-50 transition-colors">
             <span className="text-sm font-medium text-gray-800">🗺️ Find Stores</span>
             <span className="text-gray-400 text-sm">→</span>
           </Link>
@@ -115,7 +130,6 @@ export default function Profile() {
           </button>
         </div>
 
-        {/* Logout */}
         <button
           onClick={handleLogout}
           disabled={loading}

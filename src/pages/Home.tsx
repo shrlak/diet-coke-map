@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
-import { SlidersHorizontal, MapIcon, List, X, Route } from 'lucide-react'
+import { SlidersHorizontal, MapIcon, List, X, Route, Bell } from 'lucide-react'
 import SearchBar from '../components/SearchBar'
 import StoreCard from '../components/StoreCard'
 import FilterPanel from '../components/FilterPanel'
@@ -18,7 +18,12 @@ import {
   addToFavorites,
   removeFromFavorites,
   getFavoriteStores,
+  getAllStoreRatings,
+  getAlertNotifications,
+  type StoreRatingSummary,
+  type EnrichedStockAlert,
 } from '../services/api'
+import { isOpenNow } from '../utils/storeHours'
 import type { Store, UserLocation } from '../types'
 
 const Map = lazy(() => import('../components/Map'))
@@ -77,17 +82,27 @@ export default function Home() {
   const [favoritedIds, setFavoritedIds] = useState<Set<string>>(new Set())
   const [selectedStore, setSelectedStore] = useState<Store | null>(null)
   const [showHeatmap, setShowHeatmap] = useState(false)
+  const [storeRatings, setStoreRatings] = useState<Record<string, StoreRatingSummary>>({})
+  const [alertNotifications, setAlertNotifications] = useState<EnrichedStockAlert[]>([])
+  const [alertBannerDismissed, setAlertBannerDismissed] = useState(false)
   const geoLoadedRef = useRef(false)
 
   // Load all stores on mount
   useEffect(() => {
     loadStores()
+    getAllStoreRatings().then(setStoreRatings)
   }, [])
 
-  // Refresh favorites when user changes
+  // Refresh favorites + alert notifications when user changes
   useEffect(() => {
-    if (user) loadFavorites()
-    else setFavoritedIds(new Set())
+    if (user) {
+      loadFavorites()
+      setAlertBannerDismissed(false)
+      getAlertNotifications(user.id).then(setAlertNotifications)
+    } else {
+      setFavoritedIds(new Set())
+      setAlertNotifications([])
+    }
   }, [user])
 
   // When geolocation resolves, update map and load nearby stores
@@ -199,6 +214,7 @@ export default function Home() {
       if (!filters.productIds.some((id) => storeSkus.includes(id))) return false
     }
     if (filters.storeType && store.store_type !== filters.storeType) return false
+    if (filters.isOpenNow && !isOpenNow(store.store_hours)) return false
     return true
   })
 
@@ -206,6 +222,12 @@ export default function Home() {
   const sortedStores =
     sortBy === 'name'
       ? [...filteredStores].sort((a, b) => a.name.localeCompare(b.name))
+      : sortBy === 'rating'
+      ? [...filteredStores].sort((a, b) => {
+          const ra = storeRatings[a.id]?.avg_rating ?? 0
+          const rb = storeRatings[b.id]?.avg_rating ?? 0
+          return rb - ra
+        })
       : userLocation
       ? [...filteredStores].sort((a, b) =>
           calculateDistance(userLocation.latitude, userLocation.longitude, a.latitude, a.longitude) -
@@ -224,12 +246,15 @@ export default function Home() {
   const hasActiveFilters =
     activeProductIds.length > 0 ||
     Boolean(filters.storeType) ||
-    radiusKm !== 25
+    radiusKm !== 25 ||
+    Boolean(filters.isOpenNow)
 
   const routeStopIds = new Set(routeStops.map((s) => s.id))
 
   // Recently viewed stores that are in the current store list
   const recentInList = recentStores.filter((rs) => stores.some((s) => s.id === rs.id))
+
+  const showAlertBanner = !alertBannerDismissed && alertNotifications.length > 0
 
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden">
@@ -300,6 +325,12 @@ export default function Home() {
             <button onClick={() => setFilters({ storeType: undefined })} className="hover:text-red-800"><X size={10} /></button>
           </span>
         )}
+        {filters.isOpenNow && (
+          <span className="flex items-center gap-1 px-2 py-0.5 bg-green-50 border border-green-200 text-green-700 text-xs rounded-full flex-shrink-0">
+            🟢 Open now
+            <button onClick={() => setFilters({ isOpenNow: false })} className="hover:text-green-900"><X size={10} /></button>
+          </span>
+        )}
 
         {/* Store count + view toggle */}
         <div className="ml-auto flex items-center gap-2 flex-shrink-0">
@@ -330,6 +361,18 @@ export default function Home() {
         <div className="bg-red-50 border-b border-red-200 px-4 py-2 text-[#E8192C] text-sm flex-shrink-0 flex items-center justify-between">
           <span>{error}</span>
           <button onClick={() => setError(null)} className="ml-2 hover:underline text-xs">Dismiss</button>
+        </div>
+      )}
+
+      {/* Alert notification banner */}
+      {showAlertBanner && (
+        <div className="bg-green-50 border-b border-green-200 px-4 py-2 flex-shrink-0 flex items-center gap-2">
+          <Bell size={13} className="text-green-600 shrink-0" />
+          <span className="text-green-700 text-sm flex-1">
+            <strong>{alertNotifications.length} product{alertNotifications.length !== 1 ? 's' : ''}</strong> from your alerts {alertNotifications.length === 1 ? 'is' : 'are'} back in stock!
+          </span>
+          <a href="/alerts" className="text-green-700 text-xs font-semibold hover:underline shrink-0">View alerts →</a>
+          <button onClick={() => setAlertBannerDismissed(true)} className="text-green-500 hover:text-green-700 ml-1"><X size={13} /></button>
         </div>
       )}
 
@@ -439,6 +482,8 @@ export default function Home() {
                       key={store.id}
                       store={store}
                       distance={getDistance(store)}
+                      avgRating={storeRatings[store.id]?.avg_rating}
+                      reviewCount={storeRatings[store.id]?.review_count}
                       isSelected={isRoutePlanning ? routeStopIds.has(store.id) : selectedStoreId === store.id}
                       isFavorited={favoritedIds.has(store.id)}
                       onSelect={handleStoreSelect}

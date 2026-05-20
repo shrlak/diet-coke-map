@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { signOut } from '../services/api'
-import { Menu, X, MapPin, Heart, User, LogOut, LogIn, PlusCircle } from 'lucide-react'
+import { Menu, X, MapPin, Heart, User, LogOut, LogIn, PlusCircle, Bell } from 'lucide-react'
 import SuggestStoreModal from './SuggestStoreModal'
 
 export default function Navbar() {
@@ -46,6 +46,12 @@ export default function Navbar() {
               <Link to="/favorites" className="text-gray-300 hover:text-white transition-colors flex items-center gap-1.5">
                 <Heart size={14} />
                 Favorites
+              </Link>
+            )}
+            {isAuthenticated && (
+              <Link to="/alerts" className="text-gray-300 hover:text-white transition-colors flex items-center gap-1.5">
+                <Bell size={14} />
+                Alerts
               </Link>
             )}
             {isAuthenticated ? (
@@ -96,6 +102,11 @@ export default function Navbar() {
             {isAuthenticated && (
               <Link to="/favorites" onClick={() => setMenuOpen(false)} className="text-gray-300 hover:text-white transition-colors flex items-center gap-2 py-2">
                 <Heart size={15} /> Favorites
+              </Link>
+            )}
+            {isAuthenticated && (
+              <Link to="/alerts" onClick={() => setMenuOpen(false)} className="text-gray-300 hover:text-white transition-colors flex items-center gap-2 py-2">
+                <Bell size={15} /> Alerts
               </Link>
             )}
             {isAuthenticated ? (

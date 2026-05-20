@@ -14,6 +14,7 @@ import {
   ThumbsDown,
   MessageSquare,
   Trash2,
+  CheckSquare,
 } from 'lucide-react'
 import type { Store, StoreReview, StockConfirmationSummary } from '../types'
 import { useAuthStore } from '../store/authStore'
@@ -31,6 +32,9 @@ import {
   getStockAlerts,
   getStockConfirmationSummary,
   addStockConfirmation,
+  addCheckin,
+  getRecentCheckinCount,
+  getMyLastCheckin,
 } from '../services/api'
 
 const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -91,6 +95,11 @@ export default function StoreDetailsModal({ store, onClose, distanceKm }: StoreD
   // Track what the user has voted on this session (localStorage key per store)
   const [voted, setVoted] = useState<Record<string, boolean | null>>({})
 
+  // Check-in state
+  const [checkinCount, setCheckinCount] = useState(0)
+  const [lastCheckin, setLastCheckin] = useState<string | null>(null)
+  const [checkinLoading, setCheckinLoading] = useState(false)
+
   useEffect(() => {
     if (!store) return
     setTab('details')
@@ -129,6 +138,16 @@ export default function StoreDetailsModal({ store, onClose, distanceKm }: StoreD
         getStockConfirmationSummary(sp.id).then((summary) => {
           setConfirmations((prev) => ({ ...prev, [sp.id]: summary }))
         })
+      })
+    }
+
+    // Check-in data
+    setCheckinCount(0)
+    setLastCheckin(null)
+    getRecentCheckinCount(store.id).then(setCheckinCount)
+    if (user) {
+      getMyLastCheckin(user.id, store.id).then(({ data }) => {
+        setLastCheckin(data?.created_at ?? null)
       })
     }
   }, [store, user])
@@ -189,6 +208,16 @@ export default function StoreDetailsModal({ store, onClose, distanceKm }: StoreD
       setShareCopied(true)
       setTimeout(() => setShareCopied(false), 2000)
     }
+  }
+
+  const handleCheckin = async () => {
+    if (!user) return
+    setCheckinLoading(true)
+    await addCheckin(user.id, store.id)
+    const newCount = await getRecentCheckinCount(store.id)
+    setCheckinCount(newCount)
+    setLastCheckin(new Date().toISOString())
+    setCheckinLoading(false)
   }
 
   const handleConfirm = async (spId: string, isConfirmed: boolean) => {
@@ -369,7 +398,31 @@ export default function StoreDetailsModal({ store, onClose, distanceKm }: StoreD
                     <Phone size={16} />
                   </a>
                 )}
+
+                {/* Check-in button */}
+                {isAuthenticated && (
+                  <button
+                    onClick={handleCheckin}
+                    disabled={checkinLoading || Boolean(lastCheckin && Date.now() - new Date(lastCheckin).getTime() < 3_600_000)}
+                    title={lastCheckin && Date.now() - new Date(lastCheckin).getTime() < 3_600_000 ? "You've already checked in recently" : "Check in — I'm here now!"}
+                    className={`px-4 py-2.5 border rounded-lg transition-all disabled:opacity-50 flex flex-col items-center gap-0.5 ${
+                      lastCheckin && Date.now() - new Date(lastCheckin).getTime() < 3_600_000
+                        ? 'border-green-200 bg-green-50 text-green-600'
+                        : 'border-gray-200 text-gray-400 hover:border-green-300 hover:text-green-600 hover:bg-green-50'
+                    }`}
+                  >
+                    <CheckSquare size={15} />
+                    {checkinCount > 0 && <span className="text-[9px] font-semibold">{checkinCount}</span>}
+                  </button>
+                )}
               </div>
+
+              {/* Check-in context line */}
+              {checkinCount > 0 && (
+                <p className="text-xs text-gray-400 -mt-2">
+                  {checkinCount} {checkinCount === 1 ? 'person' : 'people'} checked in here in the last 24 hours
+                </p>
+              )}
 
               {store.phone && (
                 <div className="flex items-center gap-2 text-sm text-gray-500">

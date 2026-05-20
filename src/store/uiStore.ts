@@ -40,11 +40,11 @@ export const useMapStore = create<MapState>((set) => ({
 interface FilterState {
   filters: SearchFilters
   searchQuery: string
-  sortBy: 'distance' | 'name'
+  sortBy: 'distance' | 'name' | 'rating'
 
   setFilters: (filters: Partial<SearchFilters>) => void
   setSearchQuery: (query: string) => void
-  setSortBy: (sortBy: 'distance' | 'name') => void
+  setSortBy: (sortBy: 'distance' | 'name' | 'rating') => void
   setRadius: (radiusKm: number) => void
   setProductFilter: (productIds: string[]) => void
   setLocation: (latitude: number, longitude: number) => void
@@ -85,5 +85,5 @@ export const useFilterStore = create<FilterState>((set) => ({
       filters: { ...state.filters, latitude, longitude },
     })),
 
-  resetFilters: () => set({ filters: DEFAULT_FILTERS, searchQuery: '' }),
+  resetFilters: () => set({ filters: DEFAULT_FILTERS, searchQuery: '', sortBy: 'distance' }),
 }))

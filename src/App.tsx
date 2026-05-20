@@ -8,6 +8,7 @@ import Favorites from './pages/Favorites'
 import Profile from './pages/Profile'
 import About from './pages/About'
 import StorePage from './pages/StorePage'
+import Alerts from './pages/Alerts'
 
 const NotFound = () => (
   <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
@@ -49,6 +50,7 @@ function App() {
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/about" element={<About />} />
+            <Route path="/alerts" element={<Alerts />} />
             <Route path="/store/:id" element={<StorePage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

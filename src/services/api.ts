@@ -487,3 +487,126 @@ export const submitStore = async (submission: StoreSubmission) => {
     return { data: null, error }
   }
 }
+
+// ── Store ratings (aggregate view) ───────────────────────────────────────────
+
+export interface StoreRatingSummary {
+  store_id: string
+  avg_rating: number
+  review_count: number
+}
+
+export const getAllStoreRatings = async (): Promise<Record<string, StoreRatingSummary>> => {
+  try {
+    const { data, error } = await supabase.from('store_avg_ratings').select('*')
+    if (error) throw error
+    const map: Record<string, StoreRatingSummary> = {}
+    for (const row of data ?? []) {
+      map[row.store_id] = {
+        store_id: row.store_id,
+        avg_rating: Number(row.avg_rating),
+        review_count: Number(row.review_count),
+      }
+    }
+    return map
+  } catch {
+    return {}
+  }
+}
+
+// ── Store check-ins ───────────────────────────────────────────────────────────
+
+export const addCheckin = async (userId: string, storeId: string) => {
+  try {
+    const { data, error } = await supabase
+      .from('store_checkins')
+      .insert({ user_id: userId, store_id: storeId })
+      .select()
+    if (error) throw error
+    return { data, error: null }
+  } catch (error) {
+    console.error('Error adding check-in:', error)
+    return { data: null, error }
+  }
+}
+
+export const getRecentCheckinCount = async (storeId: string): Promise<number> => {
+  try {
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+    const { count, error } = await supabase
+      .from('store_checkins')
+      .select('*', { count: 'exact', head: true })
+      .eq('store_id', storeId)
+      .gte('created_at', since)
+    if (error) throw error
+    return count ?? 0
+  } catch {
+    return 0
+  }
+}
+
+export const getMyLastCheckin = async (userId: string, storeId: string) => {
+  try {
+    const { data, error } = await supabase
+      .from('store_checkins')
+      .select('created_at')
+      .eq('user_id', userId)
+      .eq('store_id', storeId)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single()
+    if (error?.code === 'PGRST116') return { data: null, error: null }
+    if (error) throw error
+    return { data, error: null }
+  } catch (error) {
+    return { data: null, error }
+  }
+}
+
+// ── Enriched stock alerts (with store + product names) ───────────────────────
+
+export interface EnrichedStockAlert {
+  id: string
+  user_id: string
+  store_id: string
+  product_id: string
+  created_at: string
+  store_name: string
+  store_address: string
+  product_name: string
+  in_stock: boolean
+}
+
+export const getEnrichedStockAlerts = async (userId: string): Promise<EnrichedStockAlert[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('stock_alerts')
+      .select(`
+        id, user_id, store_id, product_id, created_at,
+        stores(name, address),
+        products(name),
+        store_products!inner(in_stock)
+      `)
+      .eq('user_id', userId)
+    if (error) throw error
+    return (data ?? []).map((row: any) => ({
+      id: row.id,
+      user_id: row.user_id,
+      store_id: row.store_id,
+      product_id: row.product_id,
+      created_at: row.created_at,
+      store_name: row.stores?.name ?? '',
+      store_address: row.stores?.address ?? '',
+      product_name: row.products?.name?.replace('Diet Coke - ', '').replace('Diet Coke ', '') ?? '',
+      in_stock: row.store_products?.[0]?.in_stock ?? false,
+    }))
+  } catch (error) {
+    console.error('Error fetching enriched alerts:', error)
+    return []
+  }
+}
+
+export const getAlertNotifications = async (userId: string): Promise<EnrichedStockAlert[]> => {
+  const alerts = await getEnrichedStockAlerts(userId)
+  return alerts.filter((a) => a.in_stock)
+}

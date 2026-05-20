@@ -1,29 +1,11 @@
 import { Heart, Clock, ChevronRight } from 'lucide-react'
 import type { Store, StoreHours } from '../types'
 import StarRating from './StarRating'
+import { openStatusLabel } from '../utils/storeHours'
 
-function getOpenStatus(hours: StoreHours[] | undefined): { isOpen: boolean; label: string } {
-  if (!hours || hours.length === 0) return { isOpen: false, label: 'Hours unavailable' }
-
-  const now = new Date()
-  const dayOfWeek = now.getDay()
-  const currentTime = now.toTimeString().slice(0, 5)
-  const todayHours = hours.find((h) => h.day_of_week === dayOfWeek)
-
-  if (!todayHours || todayHours.is_closed) return { isOpen: false, label: 'Closed today' }
-
-  const isOpen = currentTime >= todayHours.opens_at && currentTime <= todayHours.closes_at
-
-  if (isOpen) return { isOpen: true, label: `Open until ${formatTime(todayHours.closes_at)}` }
-  if (currentTime < todayHours.opens_at) return { isOpen: false, label: `Opens at ${formatTime(todayHours.opens_at)}` }
-  return { isOpen: false, label: 'Closed for today' }
-}
-
-function formatTime(time: string): string {
-  const [hours, minutes] = time.split(':').map(Number)
-  const period = hours >= 12 ? 'PM' : 'AM'
-  const displayHour = hours % 12 || 12
-  return `${displayHour}${minutes === 0 ? '' : `:${String(minutes).padStart(2, '0')}`} ${period}`
+// Keep local StoreHours param for compatibility
+function getOpenStatus(hours: StoreHours[] | undefined) {
+  return openStatusLabel(hours)
 }
 
 function formatDistance(km: number): string {
