@@ -5,6 +5,7 @@ import StoreCard from '../components/StoreCard'
 import FilterPanel from '../components/FilterPanel'
 import StoreDetailsModal from '../components/StoreDetailsModal'
 import RoutePanel from '../components/RoutePanel'
+import ConnectionStatus from '../components/ConnectionStatus'
 import { useAuthStore } from '../store/authStore'
 import { useFilterStore, useMapStore } from '../store/uiStore'
 import { useRecentlyViewedStore } from '../store/recentlyViewedStore'
@@ -71,7 +72,7 @@ export default function Home() {
   const { isActive: isRoutePlanning, stops: routeStops, toggleActive: toggleRoutePlanning, addStop, removeStop } =
     useRoutePlannerStore()
 
-  const { location: geoLocation, loading: geoLoading, requestLocation } = useGeoLocation()
+  const { location: geoLocation, loading: geoLoading, error: geoError, requestLocation } = useGeoLocation()
 
   const [stores, setStores] = useState<Store[]>([])
   const [loading, setLoading] = useState(true)
@@ -408,6 +409,15 @@ export default function Home() {
                   {sortedStores.length} stores
                 </div>
               )}
+
+              <div className="absolute bottom-3 left-3 z-[1000]">
+                <ConnectionStatus
+                  gpsHasLocation={!!geoLocation}
+                  gpsLoading={geoLoading}
+                  gpsError={geoError}
+                  onRequestGps={handleGeolocate}
+                />
+              </div>
             </div>
 
             {/* Horizontal store strip */}
